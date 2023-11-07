@@ -1,72 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnimalesController">
+<BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OlimpiadasController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar prefHeight="22.0" prefWidth="805.0" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Especies">
+          <Menu mnemonicParsing="false" text="Olimpiadas">
             <items>
-              <MenuItem fx:id="miAnadirEspecie" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarEspecie" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarEspecie" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+              <MenuItem fx:id="miAnadirOlimpiada" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
+                  <MenuItem fx:id="miEditarOlimpiada" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
+                  <MenuItem fx:id="miBorrarOlimpiada" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Deportes">
+               <items>
+                  <MenuItem fx:id="miAnadirDeporte" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
+                  <MenuItem fx:id="miEditarDeporte" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
+                  <MenuItem fx:id="miBorrarDeporte" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Eventos">
+               <items>
+                  <MenuItem fx:id="miAnadirEvento" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
+                  <MenuItem fx:id="miEditarEvento" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
+                  <MenuItem fx:id="miBorrarEvento" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Deportistas">
+               <items>
+                  <MenuItem fx:id="miAnadirDeportista" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
+                  <MenuItem fx:id="miEditarDeportista" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
+                  <MenuItem fx:id="miBorrarDeportista" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Equipos">
+               <items>
+                  <MenuItem fx:id="miAnadirEquipo" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
+                  <MenuItem fx:id="miEditarEquipo" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
+                  <MenuItem fx:id="miBorrarEquipo" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
    <center>
-      <GridPane prefHeight="599.0" prefWidth="803.0" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="757.0" prefWidth="805.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="383.6366578028832" minWidth="10.0" prefWidth="194.54510506850818" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="537.7284546778832" minWidth="10.0" prefWidth="428.18342330136386" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.72790536147693" minWidth="10.0" prefWidth="182.72790536147693" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="84.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="332.0" minHeight="10.0" prefHeight="98.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="418.0" minHeight="10.0" prefHeight="417.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="306.00113227658176" minHeight="10.0" prefHeight="96.18216564419606" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="291.54661872677707" minHeight="10.0" prefHeight="76.27301036195462" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="332.0" minHeight="10.0" prefHeight="88.18217181254067" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="418.0" minHeight="10.0" prefHeight="415.4560366386703" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="REGISTRO DE ANIMALES" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+            <Label text="OLIMPIADAS" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER">
                <font>
                   <Font size="25.0" />
                </font>
             </Label>
-            <FlowPane alignment="CENTER_RIGHT" hgap="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Búsqueda:" />
-                  <TextField fx:id="tfBusqueda" onKeyTyped="#buscar">
-                     <FlowPane.margin>
-                        <Insets right="20.0" />
-                     </FlowPane.margin>
-                  </TextField>
-               </children>
-            </FlowPane>
-            <TableView fx:id="tvAnimales" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <TableView fx:id="tvDeportistas" prefHeight="295.0" prefWidth="795.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
               <columns>
-                <TableColumn fx:id="tcCodigo" prefWidth="136.36414223909378" text="CÓDIGO" />
-                <TableColumn fx:id="tcNombre" prefWidth="192.72796630859375" text="Nombre" />
-                  <TableColumn fx:id="tcEspecie" minWidth="0.0" prefWidth="185.45523071289062" text="Especie" />
-                  <TableColumn fx:id="tcRaza" minWidth="0.0" prefWidth="138.18231201171875" text="Raza" />
-                  <TableColumn fx:id="tcSexo" prefWidth="43.6365966796875" text="Sexo" />
-                  <TableColumn fx:id="tcEdad" prefWidth="47.27294921875" text="Edad" />
-                  <TableColumn fx:id="tcPeso" prefWidth="61.8184814453125" text="Peso" />
+                <TableColumn fx:id="tcNombre" prefWidth="440.00160562992096" text="Nombre" />
+                <TableColumn fx:id="tcSexo" prefWidth="53.63653564453125" text="Sexo" />
+                  <TableColumn fx:id="tcPeso" minWidth="0.0" prefWidth="55.4547119140625" text="Peso" />
+                  <TableColumn fx:id="tcAltura" minWidth="0.0" prefWidth="64.54571533203125" text="Altura" />
+                  <TableColumn fx:id="tcEdad" prefWidth="61.818359375" text="Edad" />
+                  <TableColumn fx:id="tcMedalla" prefWidth="133.6368408203125" text="Medalla" />
               </columns>
             </TableView>
+            <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Olimpiada: " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Deporte: " GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Evento: " GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbOlimpiadas" onAction="#cambioOlimpiada" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbDeportes" onAction="#cambioDeporte" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cbEvento" onAction="#cambioEvento" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="btnVincularDeporte" mnemonicParsing="false" text="Añadir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button fx:id="btnVincularEvento" mnemonicParsing="false" text="Añadir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </center>

@@ -6,13 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import model.Equipo;
 
 
 public class DAOEquipo extends DAOBase{
 	
-	public static Equipo getEquipo(int id) throws AnimalesException {
+	public static Equipo getEquipo(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Equipo WHERE id_equipo = ?";
 			try(Connection con = getConexion()) {
@@ -23,13 +23,13 @@ public class DAOEquipo extends DAOBase{
 					return new Equipo(rs);
 				}
 			} catch (SQLException e) {
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			}
 		}
 		return null;
 	}
 	
-	public static void anadirEquipo(Equipo equipo) throws AnimalesException, SQLException {
+	public static void anadirEquipo(Equipo equipo) throws OlimpiadasException, SQLException {
 		if (equipo != null) {
 			
 			String sql = "INSERT INTO Equipo ("
@@ -57,16 +57,16 @@ public class DAOEquipo extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
-	public static void modificarEquipo(Equipo equipo) throws AnimalesException, SQLException, IOException {
+	public static void modificarEquipo(Equipo equipo) throws OlimpiadasException, SQLException, IOException {
 		if (equipo != null && equipo.getId() > 0) {
 			
 			String sql = "UPDATE Equipo SET "
@@ -90,16 +90,16 @@ public class DAOEquipo extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
-	public static void borrarEquipo(Equipo equipo) throws SQLException, AnimalesException {
+	public static void borrarEquipo(Equipo equipo) throws SQLException, OlimpiadasException {
 		if (equipo != null && equipo.getId() > 0) {			
 			String sql = "DELETE FROM Equipo WHERE id_equipo = ?";
 			Connection con = null;
@@ -112,7 +112,7 @@ public class DAOEquipo extends DAOBase{
 				con.commit();
 			} catch (SQLException e) {
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}

@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import enums.Sexo;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -36,9 +36,9 @@ public class Utilidades {
 	 * 
 	 * @param rs ResultSet a mapear
 	 * @return Objeto Animal mapeado
-	 * @throws AnimalesException si ocurre un error al mapear el ResultSet
+	 * @throws OlimpiadasException si ocurre un error al mapear el ResultSet
 	 */
-	public static Animal mapAnimal(ResultSet rs) throws AnimalesException {
+	public static Animal mapAnimal(ResultSet rs) throws OlimpiadasException {
 		try {
 			return new Animal()
 					.setCodigo(rs.getString("codigo"))
@@ -55,7 +55,7 @@ public class Utilidades {
 					.setFoto(rs.getBinaryStream("foto").readAllBytes());
 			
 		} catch (SQLException | IOException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	
@@ -64,15 +64,15 @@ public class Utilidades {
 	 * 
 	 * @param str cadena a convertir
 	 * @return valor double convertido
-	 * @throws AnimalesException si la cadena no tiene un formato decimal válido
+	 * @throws OlimpiadasException si la cadena no tiene un formato decimal válido
 	 */
-	public static double parseDouble(String str) throws AnimalesException {
+	public static double parseDouble(String str) throws OlimpiadasException {
 		if (str != null && !str.isBlank()) {
 			try {
 				return Double.parseDouble(str.replace(',', '.'));
 			} catch (NumberFormatException e) {/*QUE SALTE A LA EXCEPCIÓN*/}
 		}
-		throw new AnimalesException("Formato de número decimal incorrecto");
+		throw new OlimpiadasException("Formato de número decimal incorrecto");
 	}
 	
 	/**
@@ -80,15 +80,15 @@ public class Utilidades {
 	 * 
 	 * @param str cadena a convertir
 	 * @return valor int convertido
-	 * @throws AnimalesException si la cadena no tiene un formato entero válido
+	 * @throws OlimpiadasException si la cadena no tiene un formato entero válido
 	 */
-	public static int parseInt(String str) throws AnimalesException {
+	public static int parseInt(String str) throws OlimpiadasException {
 		if (str != null && !str.isBlank()) {
 			try {
 				return Integer.parseInt(str);
 			} catch (NumberFormatException e) {/*QUE SALTE A LA EXCEPCIÓN*/}
 		}
-		throw new AnimalesException("Formato de número entero incorrecto");
+		throw new OlimpiadasException("Formato de número entero incorrecto");
 	}
 	
 	/**
@@ -151,14 +151,14 @@ public class Utilidades {
 	 * 
 	 * @param bytes array de bytes a convertir
 	 * @return imagen convertida
-	 * @throws AnimalesException si ocurre un error al convertir el array de bytes en imagen
+	 * @throws OlimpiadasException si ocurre un error al convertir el array de bytes en imagen
 	 */
-	public static Image byte2Image(byte[] bytes) throws AnimalesException {
+	public static Image byte2Image(byte[] bytes) throws OlimpiadasException {
 		if (bytes != null) {
 			try (InputStream is = new ByteArrayInputStream(bytes)) {				
 				return new Image(is);
 			} catch (IOException e) {
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			}
 		}
 		return null;
@@ -168,14 +168,14 @@ public class Utilidades {
 	 * Verifica que el contenido de un TextField sea un número decimal válido.
 	 * 
 	 * @param tf TextField a verificar
-	 * @throws AnimalesException si el contenido del TextField no es un número decimal válido
+	 * @throws OlimpiadasException si el contenido del TextField no es un número decimal válido
 	 */
-	public static void checkCampoDouble(TextField tf) throws AnimalesException {
+	public static void checkCampoDouble(TextField tf) throws OlimpiadasException {
 		String strNum = tf.getText();
 		Pattern doublePattern = Pattern.compile("\\d+([\\.,]\\d+)?");
 		Matcher matcher = doublePattern.matcher(strNum);
 		if (!matcher.matches()) {
-			throw new AnimalesException("El campo " + tf.getId() + " contiene un formato incorrecto o está vacío");
+			throw new OlimpiadasException("El campo " + tf.getId() + " contiene un formato incorrecto o está vacío");
 		}
 	}
 
@@ -183,14 +183,14 @@ public class Utilidades {
 	 * Verifica que el contenido de un TextField sea un número entero válido.
 	 * 
 	 * @param tf TextField a verificar
-	 * @throws AnimalesException si el contenido del TextField no es un número entero válido
+	 * @throws OlimpiadasException si el contenido del TextField no es un número entero válido
 	 */
-	public static void checkCampoInt(TextField tf) throws AnimalesException {
+	public static void checkCampoInt(TextField tf) throws OlimpiadasException {
 		String strNum = tf.getText();
 		Pattern intPattern = Pattern.compile("\\d+");
 		Matcher matcher = intPattern.matcher(strNum);
 		if (!matcher.matches()) {
-			throw new AnimalesException("El campo " + tf.getId() + " contiene un formato incorrecto o está vacío");
+			throw new OlimpiadasException("El campo " + tf.getId() + " contiene un formato incorrecto o está vacío");
 		}
 	}
 
@@ -198,12 +198,12 @@ public class Utilidades {
 	 * Verifica que el contenido de un TextField no sea nulo ni vacío.
 	 * 
 	 * @param tf TextField a verificar
-	 * @throws AnimalesException si el contenido del TextField es nulo o vacío
+	 * @throws OlimpiadasException si el contenido del TextField es nulo o vacío
 	 */
-	public static void checkCampoStrNotNull(TextField tf) throws AnimalesException {
+	public static void checkCampoStrNotNull(TextField tf) throws OlimpiadasException {
 		String str = tf.getText();
 		if (str == null || str.isBlank()) {
-			throw new AnimalesException("El campo" + tf.getId() + " está vacío");
+			throw new OlimpiadasException("El campo" + tf.getId() + " está vacío");
 		}
 	}
 	

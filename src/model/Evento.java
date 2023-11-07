@@ -2,10 +2,11 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import dao.DAODeporte;
 import dao.DAOOlimpiada;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 
 public class Evento {
 	
@@ -15,14 +16,14 @@ public class Evento {
 	private Deporte deporte;
 	
 	public Evento() {}
-	public Evento(ResultSet rs) throws AnimalesException {
+	public Evento(ResultSet rs) throws OlimpiadasException {
 		try {
 			id = rs.getInt("id_evento");
 			nombre = rs.getString("nombre");
 			olimpiada = DAOOlimpiada.getOlimpiada(rs.getInt("id_olimpiada"));
 			deporte = DAODeporte.getDeporte(rs.getInt("id_deporte"));
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	
@@ -54,6 +55,26 @@ public class Evento {
 		this.deporte = deporte;
 		return this;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Evento other = (Evento) obj;
+		return id == other.id;
+	}
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
 	
 	
 }

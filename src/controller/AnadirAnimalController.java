@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import dao.DAOAnimales;
 import dao.DAOEspecies;
 import enums.Sexo;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -176,7 +176,7 @@ public class AnadirAnimalController implements Initializable {
 			Utilidades.mostrarInfo("EL animal fue " + seleccionado != null ? "modificado" : "insertado");
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 			stage.close();
-		} catch (AnimalesException | SQLException e) {
+		} catch (OlimpiadasException | SQLException e) {
 			lanzarError(e);
 		}
 
@@ -196,7 +196,7 @@ public class AnadirAnimalController implements Initializable {
 				
 				this.imagenSeleccionada = fis.readAllBytes();
 				tvImagen.setImage(byte2Image(this.imagenSeleccionada));
-			} catch (IOException | AnimalesException e) {
+			} catch (IOException | OlimpiadasException e) {
 				lanzarError(e);
 			}
     	}
@@ -204,9 +204,9 @@ public class AnadirAnimalController implements Initializable {
     
     /**
      * Método para comprobar los datos.
-     * @throws AnimalesException Si los datos no son válidos.
+     * @throws OlimpiadasException Si los datos no son válidos.
      */
-    private void comprobarDatos() throws AnimalesException {
+    private void comprobarDatos() throws OlimpiadasException {
     	Utilidades.checkCampoStrNotNull(tfCodigo);
     	Utilidades.checkCampoStrNotNull(tfNombre);
     	Utilidades.checkCampoInt(tfEdad);
@@ -216,9 +216,9 @@ public class AnadirAnimalController implements Initializable {
     /**
      * Método para construir un animal.
      * @return El animal construido.
-     * @throws AnimalesException Si los datos no son válidos.
+     * @throws OlimpiadasException Si los datos no son válidos.
      */
-    private Animal construirAnimal() throws AnimalesException {
+    private Animal construirAnimal() throws OlimpiadasException {
     	return new Animal()
     			.setCodigo(tfCodigo.getText())
     			.setNombre(tfNombre.getText())
@@ -256,7 +256,7 @@ public class AnadirAnimalController implements Initializable {
     			cbSexo.getSelectionModel().selectFirst();				
     			cbEspecie.getSelectionModel().selectFirst();				
     		}
-    	} catch (AnimalesException e) {
+    	} catch (OlimpiadasException e) {
     		lanzarError(e);
     	}
     }
@@ -271,7 +271,7 @@ public class AnadirAnimalController implements Initializable {
 		try {
 			cbEspecie.getItems().addAll(DAOEspecies.getEspecies().stream().sorted((e1, e2) -> e1.getNombre().compareTo(e2.getNombre())).toList());
 			cbSexo.getItems().addAll(Sexo.values());
-		} catch (AnimalesException e) {
+		} catch (OlimpiadasException e) {
 			lanzarError(e);
 		}
 	}

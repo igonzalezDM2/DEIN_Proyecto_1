@@ -2,9 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import enums.Sexo;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 
 public class Deportista {
 	private int id;
@@ -16,7 +17,7 @@ public class Deportista {
 	
 	public Deportista() {}
 	
-	public Deportista(ResultSet rs) throws AnimalesException {
+	public Deportista(ResultSet rs) throws OlimpiadasException {
 		try {
 			id = rs.getInt("id_deportista");
 			nombre = rs.getString("nombre");
@@ -25,7 +26,7 @@ public class Deportista {
 			altura = rs.getInt("altura") > 0 ? rs.getInt("altura") : null;
 			foto = rs.getBytes("foto");
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	
@@ -71,6 +72,29 @@ public class Deportista {
 		this.foto = foto;
 		return this;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Deportista other = (Deportista) obj;
+		return id == other.id;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
 	
 	
 }

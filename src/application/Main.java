@@ -23,9 +23,9 @@ public class Main extends Application {
 			/**
 			 * Carga la vista de la aplicación.
 			 */
-			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/fxml/Animales.fxml"));
+			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/fxml/Olimpiadas.fxml"));
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("CLÍNICA VETERINARIA PACO");
+			primaryStage.setTitle("SISTEMA DE OLIMPIADAS MANOLO");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

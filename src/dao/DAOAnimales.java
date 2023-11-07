@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import model.Animal;
 import utilities.Utilidades;
 
@@ -25,9 +25,9 @@ public class DAOAnimales extends DAOBase{
 	 * 
 	 * @param busqueda la cadena de búsqueda
 	 * @return una lista de animales que coinciden con la búsqueda
-	 * @throws AnimalesException si ocurre un error al obtener los animales
+	 * @throws OlimpiadasException si ocurre un error al obtener los animales
 	 */
-	public static List<Animal> getAnimales(String busqueda) throws AnimalesException {
+	public static List<Animal> getAnimales(String busqueda) throws OlimpiadasException {
 		try(Connection con = getConexion()) {
 			StringBuilder sb = new StringBuilder("SELECT "
 					+ "animal.codigo AS codigo, "
@@ -64,7 +64,7 @@ public class DAOAnimales extends DAOBase{
 			return animales;
 			
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 		
 	}
@@ -73,9 +73,9 @@ public class DAOAnimales extends DAOBase{
 	 * Obtiene una lista de todos los animales.
 	 * 
 	 * @return una lista de todos los animales
-	 * @throws AnimalesException si ocurre un error al obtener los animales
+	 * @throws OlimpiadasException si ocurre un error al obtener los animales
 	 */
-	public static List<Animal> getAnimales() throws AnimalesException {
+	public static List<Animal> getAnimales() throws OlimpiadasException {
 		return getAnimales(null);
 	}
 	
@@ -83,11 +83,11 @@ public class DAOAnimales extends DAOBase{
 	 * Añade un nuevo animal.
 	 * 
 	 * @param animal el animal a añadir
-	 * @throws AnimalesException si ocurre un error al añadir el animal
+	 * @throws OlimpiadasException si ocurre un error al añadir el animal
 	 * @throws SQLException si ocurre un error de SQL
 	 * @throws IOException si ocurre un error de entrada/salida
 	 */
-	public static void anadirAnimal(Animal animal) throws AnimalesException, SQLException, IOException {
+	public static void anadirAnimal(Animal animal) throws OlimpiadasException, SQLException, IOException {
 		if (animal != null && animal.getEspecie() != null && animal.getEspecie().getId() > 0) {
 			
 			String sql = "INSERT INTO animal ("
@@ -132,12 +132,12 @@ public class DAOAnimales extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
@@ -145,11 +145,11 @@ public class DAOAnimales extends DAOBase{
 	 * Modifica un animal existente.
 	 * 
 	 * @param animal el animal a modificar
-	 * @throws AnimalesException si ocurre un error al modificar el animal
+	 * @throws OlimpiadasException si ocurre un error al modificar el animal
 	 * @throws SQLException si ocurre un error de SQL
 	 * @throws IOException si ocurre un error de entrada/salida
 	 */
-	public static void modificarAnimal(Animal animal) throws AnimalesException, SQLException, IOException {
+	public static void modificarAnimal(Animal animal) throws OlimpiadasException, SQLException, IOException {
 		if (animal != null && animal.getEspecie() != null && animal.getEspecie().getId() > 0) {
 			
 			String sql = "UPDATE animal SET "
@@ -193,12 +193,12 @@ public class DAOAnimales extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
@@ -207,9 +207,9 @@ public class DAOAnimales extends DAOBase{
 	 * 
 	 * @param animal el animal a borrar
 	 * @throws SQLException si ocurre un error de SQL
-	 * @throws AnimalesException si ocurre un error al borrar el animal
+	 * @throws OlimpiadasException si ocurre un error al borrar el animal
 	 */
-	public static void borrarAnimal(Animal animal) throws SQLException, AnimalesException {
+	public static void borrarAnimal(Animal animal) throws SQLException, OlimpiadasException {
 		if (animal == null || animal.getCodigo() == null || animal.getCodigo().isBlank()) {
 			return;
 		}
@@ -224,7 +224,7 @@ public class DAOAnimales extends DAOBase{
 			con.commit();
 		} catch (SQLException e) {
 			con.rollback();
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		} finally {
 			con.close();
 		}

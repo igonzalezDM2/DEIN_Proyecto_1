@@ -2,8 +2,9 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 
 public class Equipo {
 
@@ -12,13 +13,13 @@ public class Equipo {
 	private String iniciales;
 	
 	public Equipo() {}
-	public Equipo(ResultSet rs) throws AnimalesException {
+	public Equipo(ResultSet rs) throws OlimpiadasException {
 		try {
 			id = rs.getInt("id_equipo");
 			nombre = rs.getString("nombre");
 			iniciales = rs.getString("iniciales");
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	public int getId() {
@@ -41,6 +42,25 @@ public class Equipo {
 	public Equipo setIniciales(String iniciales) {
 		this.iniciales = iniciales;
 		return this;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Equipo other = (Equipo) obj;
+		return id == other.id;
+	}
+	@Override
+	public String toString() {
+		return iniciales + " - " + nombre;
 	}
 	
 	

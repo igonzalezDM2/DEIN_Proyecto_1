@@ -2,11 +2,12 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import dao.DAODeportista;
 import dao.DAOEquipo;
 import dao.DAOEvento;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 
 public class Participacion {
 	
@@ -17,7 +18,7 @@ public class Participacion {
 	private String medalla;
 	
 	public Participacion() {}
-	public Participacion(ResultSet rs) throws AnimalesException {
+	public Participacion(ResultSet rs) throws OlimpiadasException {
 		try {
 			deportista = DAODeportista.getDeportista(rs.getInt("id_deportista"));
 			evento = DAOEvento.getEvento(rs.getInt("id_evento"));
@@ -25,7 +26,7 @@ public class Participacion {
 			edad = rs.getInt("edad") > 0 ? rs.getInt("edad") : null;
 			medalla = rs.getString("medalla");
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	public Deportista getDeportista() {
@@ -63,5 +64,21 @@ public class Participacion {
 		this.medalla = medalla;
 		return this;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(deportista, evento);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Participacion other = (Participacion) obj;
+		return Objects.equals(deportista, other.deportista) && Objects.equals(evento, other.evento);
+	}
+	
 	
 }

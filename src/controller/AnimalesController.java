@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 import dao.DAOAnimales;
 import enums.Sexo;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -188,7 +188,7 @@ public class AnimalesController implements Initializable {
 						DAOAnimales.borrarAnimal(seleccionado);
 						filtrarFilas();
 						mostrarInfo("El animal fue borrado");
-					} catch (AnimalesException | SQLException e) {
+					} catch (OlimpiadasException | SQLException e) {
 						lanzarError(e);
 					}
 				}
@@ -225,7 +225,7 @@ public class AnimalesController implements Initializable {
 		try {
 			tvAnimales.getItems().addAll(DAOAnimales.getAnimales(busqueda));
 			tvAnimales.refresh();
-		} catch (AnimalesException e) {
+		} catch (OlimpiadasException e) {
 			e.printStackTrace();
 		}
 	}

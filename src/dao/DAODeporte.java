@@ -5,14 +5,35 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import model.Deporte;
+import model.Olimpiada;
 
 
 public class DAODeporte extends DAOBase{
 	
-	public static Deporte getDeporte(int id) throws AnimalesException {
+	public static List<Deporte> getDeportesByOlimpiada(Olimpiada olimpiada) throws OlimpiadasException {
+		List<Deporte> deportes = new LinkedList<>();
+		if (olimpiada != null && olimpiada.getId() > 0) {
+			String sql = "SELECT Deporte.* FROM Deporte INNER JOIN Evento ON Deporte.id_deporte = Evento.id_deporte WHERE id_olimpiada = ?";
+			try(Connection con = getConexion()) {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, olimpiada.getId());
+				ResultSet rs = ps.executeQuery();
+				if (rs.first()) {
+					deportes.add(new Deporte(rs));
+				}
+			} catch (SQLException e) {
+				throw new OlimpiadasException(e);
+			}
+		}
+		return deportes;
+	}
+	
+	public static Deporte getDeporte(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Deporte WHERE id_deporte = ?";
 			try(Connection con = getConexion()) {
@@ -23,13 +44,13 @@ public class DAODeporte extends DAOBase{
 					return new Deporte(rs);
 				}
 			} catch (SQLException e) {
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			}
 		}
 		return null;
 	}
 	
-	public static void anadirDeporte(Deporte deporte) throws AnimalesException, SQLException {
+	public static void anadirDeporte(Deporte deporte) throws OlimpiadasException, SQLException {
 		if (deporte != null) {
 			
 			String sql = "INSERT INTO Deporte ("
@@ -55,16 +76,16 @@ public class DAODeporte extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
-	public static void modificarDeporte (Deporte deporte) throws AnimalesException, SQLException, IOException {
+	public static void modificarDeporte (Deporte deporte) throws OlimpiadasException, SQLException, IOException {
 		if (deporte != null && deporte.getId() > 0) {
 			
 			String sql = "UPDATE Deporte SET "
@@ -86,16 +107,16 @@ public class DAODeporte extends DAOBase{
 			} catch (SQLException e) {
 				e.printStackTrace();
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}			
 		} else {			
-			throw new AnimalesException("Los datos introducidos están incompletos");
+			throw new OlimpiadasException("Los datos introducidos están incompletos");
 		}
 	}
 	
-	public static void borrarDeporte(Deporte deporte) throws SQLException, AnimalesException {
+	public static void borrarDeporte(Deporte deporte) throws SQLException, OlimpiadasException {
 		if (deporte != null && deporte.getId() > 0) {			
 			String sql = "DELETE FROM Deporte WHERE id_deporte = ?";
 			Connection con = null;
@@ -108,7 +129,7 @@ public class DAODeporte extends DAOBase{
 				con.commit();
 			} catch (SQLException e) {
 				con.rollback();
-				throw new AnimalesException(e);
+				throw new OlimpiadasException(e);
 			} finally {
 				con.close();
 			}

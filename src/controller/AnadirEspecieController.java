@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.DAOEspecies;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,7 +43,7 @@ public class AnadirEspecieController implements Initializable {
     			Utilidades.mostrarInfo("La especie fue insertada");
     			//PARA CERRARLO
     			cancelar(event);
-    		} catch (AnimalesException | SQLException e) {
+    		} catch (OlimpiadasException | SQLException e) {
     			Utilidades.lanzarError(e);
     		}
     	}

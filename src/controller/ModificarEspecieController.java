@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.DAOEspecies;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -131,7 +131,7 @@ public class ModificarEspecieController implements Initializable{
 	    		//PARA SALIR
 	    		cancelar(event);
 	    	}
-    	} catch (AnimalesException | SQLException e) {
+    	} catch (OlimpiadasException | SQLException e) {
     		Utilidades.lanzarError(e);
     	}
     }
@@ -148,7 +148,7 @@ public class ModificarEspecieController implements Initializable{
 			titulo.setText("MODIFICAR ESPECIE");			
 			cbEspecie.getItems().addAll(DAOEspecies.getEspecies());
 			cbEspecie.getSelectionModel().selectFirst();
-		} catch (AnimalesException e) {
+		} catch (OlimpiadasException e) {
 			Utilidades.lanzarError(e);
 		}
 	}

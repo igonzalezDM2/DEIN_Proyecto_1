@@ -16,41 +16,41 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OlimpiadasController">
    <top>
-      <MenuBar prefHeight="22.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+      <MenuBar prefHeight="35.0" prefWidth="805.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Olimpiadas">
             <items>
-              <MenuItem fx:id="miAnadirOlimpiada" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarOlimpiada" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarOlimpiada" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+              <MenuItem fx:id="miAnadirOlimpiada" mnemonicParsing="false" onAction="#anadirOlimpiada" text="Añadir" />
+                  <MenuItem fx:id="miEditarOlimpiada" mnemonicParsing="false" onAction="#editarOlimpiada" text="Editar" />
+                  <MenuItem fx:id="miBorrarOlimpiada" mnemonicParsing="false" onAction="#borrarOlimpiada" text="Borrar" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Deportes">
                <items>
-                  <MenuItem fx:id="miAnadirDeporte" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarDeporte" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarDeporte" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+                  <MenuItem fx:id="miAnadirDeporte" mnemonicParsing="false" onAction="#anadirDeporte" text="Añadir" />
+                  <MenuItem fx:id="miEditarDeporte" mnemonicParsing="false" onAction="#editarDeporte" text="Editar" />
+                  <MenuItem fx:id="miBorrarDeporte" mnemonicParsing="false" onAction="#borrarDeporte" text="Borrar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Eventos">
                <items>
-                  <MenuItem fx:id="miAnadirEvento" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarEvento" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarEvento" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+                  <MenuItem fx:id="miAnadirEvento" mnemonicParsing="false" onAction="#anadirEvento" text="Añadir" />
+                  <MenuItem fx:id="miEditarEvento" mnemonicParsing="false" onAction="#editarEvento" text="Editar" />
+                  <MenuItem fx:id="miBorrarEvento" mnemonicParsing="false" onAction="#borrarEvento" text="Borrar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Deportistas">
                <items>
-                  <MenuItem fx:id="miAnadirDeportista" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarDeportista" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarDeportista" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+                  <MenuItem fx:id="miAnadirDeportista" mnemonicParsing="false" onAction="#anadirDeportista" text="Añadir" />
+                  <MenuItem fx:id="miEditarDeportista" mnemonicParsing="false" onAction="#editarDeportista" text="Editar" />
+                  <MenuItem fx:id="miBorrarDeportista" mnemonicParsing="false" onAction="#borrarDeportista" text="Borrar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Equipos">
                <items>
-                  <MenuItem fx:id="miAnadirEquipo" mnemonicParsing="false" onAction="#anadirEspecie" text="Añadir" />
-                  <MenuItem fx:id="miEditarEquipo" mnemonicParsing="false" onAction="#editarEspecie" text="Editar" />
-                  <MenuItem fx:id="miBorrarEquipo" mnemonicParsing="false" onAction="#borrarEspecie" text="Borrar" />
+                  <MenuItem fx:id="miAnadirEquipo" mnemonicParsing="false" onAction="#anadirEquipo" text="Añadir" />
+                  <MenuItem fx:id="miEditarEquipo" mnemonicParsing="false" onAction="#editarEquipo" text="Editar" />
+                  <MenuItem fx:id="miBorrarEquipo" mnemonicParsing="false" onAction="#borrarEquipo" text="Borrar" />
                </items>
             </Menu>
         </menus>
@@ -65,10 +65,10 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="84.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="306.00113227658176" minHeight="10.0" prefHeight="96.18216564419606" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="291.54661872677707" minHeight="10.0" prefHeight="76.27301036195462" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="332.0" minHeight="10.0" prefHeight="88.18217181254067" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="418.0" minHeight="10.0" prefHeight="415.4560366386703" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="306.00113227658176" minHeight="10.0" prefHeight="132.4550446893239" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="291.54661872677707" minHeight="10.0" prefHeight="141.54598094781144" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="332.0" minHeight="10.0" prefHeight="113.0913758012527" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="418.0" minHeight="10.0" prefHeight="296.5463625415935" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="OLIMPIADAS" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER">
@@ -76,14 +76,14 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <TableView fx:id="tvDeportistas" prefHeight="295.0" prefWidth="795.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
+            <TableView fx:id="tvDeportistas" prefHeight="329.0" prefWidth="805.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
               <columns>
-                <TableColumn fx:id="tcNombre" prefWidth="440.00160562992096" text="Nombre" />
-                <TableColumn fx:id="tcSexo" prefWidth="53.63653564453125" text="Sexo" />
-                  <TableColumn fx:id="tcPeso" minWidth="0.0" prefWidth="55.4547119140625" text="Peso" />
-                  <TableColumn fx:id="tcAltura" minWidth="0.0" prefWidth="64.54571533203125" text="Altura" />
-                  <TableColumn fx:id="tcEdad" prefWidth="61.818359375" text="Edad" />
-                  <TableColumn fx:id="tcMedalla" prefWidth="133.6368408203125" text="Medalla" />
+                <TableColumn fx:id="tcCodigo" prefWidth="440.00160562992096" text="Nombre" />
+                <TableColumn fx:id="tcNombre" prefWidth="53.63653564453125" text="Sexo" />
+                  <TableColumn fx:id="tcEspecie" minWidth="0.0" prefWidth="55.4547119140625" text="Peso" />
+                  <TableColumn fx:id="tcRaza" minWidth="0.0" prefWidth="64.54571533203125" text="Altura" />
+                  <TableColumn fx:id="tcSexo" prefWidth="61.818359375" text="Edad" />
+                  <TableColumn fx:id="tcEdad" prefWidth="133.6368408203125" text="Medalla" />
               </columns>
             </TableView>
             <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Olimpiada: " GridPane.halignment="RIGHT" GridPane.rowIndex="1">

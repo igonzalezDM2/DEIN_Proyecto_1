@@ -2,9 +2,10 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import enums.Temporada;
-import excepciones.AnimalesException;
+import excepciones.OlimpiadasException;
 
 public class Olimpiada {
 
@@ -15,7 +16,7 @@ public class Olimpiada {
 	private String ciudad;
 	
 	public Olimpiada() {}
-	public Olimpiada(ResultSet rs) throws AnimalesException {
+	public Olimpiada(ResultSet rs) throws OlimpiadasException {
 		try {
 			id = rs.getInt("id_olimpiada");
 			nombre = rs.getString("nombre");
@@ -23,7 +24,7 @@ public class Olimpiada {
 			temporada = Temporada.getByValor(rs.getString("temporada"));
 			ciudad = rs.getString("ciudad");
 		} catch (SQLException e) {
-			throw new AnimalesException(e);
+			throw new OlimpiadasException(e);
 		}
 	}
 	public int getId() {
@@ -61,5 +62,26 @@ public class Olimpiada {
 		this.ciudad = ciudad;
 		return this;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Olimpiada other = (Olimpiada) obj;
+		return id == other.id;
+	}
+	@Override
+	public String toString() {
+		return ciudad + " " + anio;
+	}
+	
+	
 	
 }
