@@ -1,10 +1,10 @@
 package dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +14,21 @@ import model.Olimpiada;
 
 
 public class DAODeporte extends DAOBase{
+	
+	public static List<Deporte> getDeportes() throws OlimpiadasException {
+		List<Deporte> deportes = new LinkedList<>();
+		String sql = "SELECT * FROM Deporte";
+		try(Connection con = getConexion()) {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.first()) {
+				deportes.add(new Deporte(rs));
+			}
+		} catch (SQLException e) {
+			throw new OlimpiadasException(e);
+		}
+		return deportes;
+	}
 	
 	public static List<Deporte> getDeportesByOlimpiada(Olimpiada olimpiada) throws OlimpiadasException {
 		List<Deporte> deportes = new LinkedList<>();
@@ -85,7 +100,7 @@ public class DAODeporte extends DAOBase{
 		}
 	}
 	
-	public static void modificarDeporte (Deporte deporte) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarDeporte (Deporte deporte) throws OlimpiadasException, SQLException {
 		if (deporte != null && deporte.getId() > 0) {
 			
 			String sql = "UPDATE Deporte SET "

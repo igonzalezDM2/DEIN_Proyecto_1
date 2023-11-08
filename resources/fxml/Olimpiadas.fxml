@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
@@ -30,13 +31,6 @@
                   <MenuItem fx:id="miAnadirDeporte" mnemonicParsing="false" onAction="#anadirDeporte" text="Añadir" />
                   <MenuItem fx:id="miEditarDeporte" mnemonicParsing="false" onAction="#editarDeporte" text="Editar" />
                   <MenuItem fx:id="miBorrarDeporte" mnemonicParsing="false" onAction="#borrarDeporte" text="Borrar" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Eventos">
-               <items>
-                  <MenuItem fx:id="miAnadirEvento" mnemonicParsing="false" onAction="#anadirEvento" text="Añadir" />
-                  <MenuItem fx:id="miEditarEvento" mnemonicParsing="false" onAction="#editarEvento" text="Editar" />
-                  <MenuItem fx:id="miBorrarEvento" mnemonicParsing="false" onAction="#borrarEvento" text="Borrar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Deportistas">
@@ -78,12 +72,12 @@
             </Label>
             <TableView fx:id="tvDeportistas" prefHeight="329.0" prefWidth="805.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
               <columns>
-                <TableColumn fx:id="tcCodigo" prefWidth="440.00160562992096" text="Nombre" />
-                <TableColumn fx:id="tcNombre" prefWidth="53.63653564453125" text="Sexo" />
-                  <TableColumn fx:id="tcEspecie" minWidth="0.0" prefWidth="55.4547119140625" text="Peso" />
-                  <TableColumn fx:id="tcRaza" minWidth="0.0" prefWidth="64.54571533203125" text="Altura" />
-                  <TableColumn fx:id="tcSexo" prefWidth="61.818359375" text="Edad" />
-                  <TableColumn fx:id="tcEdad" prefWidth="133.6368408203125" text="Medalla" />
+                <TableColumn fx:id="tcNombre" prefWidth="440.00160562992096" text="Nombre" />
+                <TableColumn fx:id="tcSexo" prefWidth="53.63653564453125" text="Sexo" />
+                  <TableColumn fx:id="tcPeso" minWidth="0.0" prefWidth="55.4547119140625" text="Peso" />
+                  <TableColumn fx:id="tcAltura" minWidth="0.0" prefWidth="64.54571533203125" text="Altura" />
+                  <TableColumn fx:id="tcEdad" prefWidth="61.818359375" text="Edad" />
+                  <TableColumn fx:id="tcMedalla" prefWidth="133.6368408203125" text="Medalla" />
               </columns>
             </TableView>
             <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Olimpiada: " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
@@ -104,8 +98,13 @@
             <ComboBox fx:id="cbOlimpiadas" onAction="#cambioOlimpiada" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="cbDeportes" onAction="#cambioDeporte" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="cbEvento" onAction="#cambioEvento" prefHeight="25.0" prefWidth="446.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="btnVincularDeporte" mnemonicParsing="false" text="Añadir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button fx:id="btnVincularEvento" mnemonicParsing="false" text="Añadir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <children>
+                  <Button fx:id="btnAnadirEvento" mnemonicParsing="false" onAction="#anadirEvento" text="Añadir" />
+                  <Button fx:id="btnEditarEvento" mnemonicParsing="false" onAction="#editarEvento" text="Editar" />
+                  <Button fx:id="editarEvento" mnemonicParsing="false" onAction="#borrarEvento" text="Borrar" />
+               </children>
+            </FlowPane>
          </children>
       </GridPane>
    </center>

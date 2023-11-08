@@ -2,6 +2,7 @@ package controller;
 
 import static utilities.Utilidades.lanzarError;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,26 +12,31 @@ import dao.DAOEvento;
 import dao.DAOOlimpiada;
 import dao.DAOParticipacion;
 import excepciones.OlimpiadasException;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Deporte;
 import model.Evento;
 import model.Olimpiada;
 import model.Participacion;
+import utilities.StringUtils;
 
 public class OlimpiadasController implements Initializable {
 
     @FXML
-    private Button btnVincularDeporte;
-
-    @FXML
-    private Button btnVincularEvento;
+    private Button btnAnadirEvento;
 
     @FXML
     private ComboBox<Deporte> cbDeportes;
@@ -51,9 +57,6 @@ public class OlimpiadasController implements Initializable {
     private MenuItem miAnadirEquipo;
 
     @FXML
-    private MenuItem miAnadirEvento;
-
-    @FXML
     private MenuItem miAnadirOlimpiada;
 
     @FXML
@@ -64,10 +67,7 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     private MenuItem miBorrarEquipo;
-
-    @FXML
-    private MenuItem miBorrarEvento;
-
+    
     @FXML
     private MenuItem miBorrarOlimpiada;
 
@@ -79,9 +79,6 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     private MenuItem miEditarEquipo;
-
-    @FXML
-    private MenuItem miEditarEvento;
 
     @FXML
     private MenuItem miEditarOlimpiada;
@@ -106,10 +103,47 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     private TableView<Participacion> tvDeportistas;
+    
+    public void refrescarOlimpiadas() {
+    	List<Olimpiada> olimpiadas;
+		try {
+			olimpiadas = DAOOlimpiada.getOlimpiadas();
+			cbOlimpiadas.getItems().clear();
+			cbOlimpiadas.getItems().addAll(olimpiadas);
+			cbOlimpiadas.getSelectionModel().selectFirst();
+		} catch (OlimpiadasException e) {
+			lanzarError(e);
+		}
+    }
+    
+    public void refrescarDeportes() {
+    	Olimpiada olimpiada = cbOlimpiadas.getSelectionModel().getSelectedItem();
+    	try {
+    		List<Deporte> deportes = DAODeporte.getDeportesByOlimpiada(olimpiada);
+    		cbDeportes.getItems().clear();
+    		cbDeportes.getItems().addAll(deportes);
+    		cbDeportes.getSelectionModel().selectFirst();
+    	} catch (OlimpiadasException e) {
+    		lanzarError(e);
+    	}
+    }
+    
+    public void filtrarDatos() {
+    	try {
+	    	Evento evento = cbEvento.getSelectionModel().getSelectedItem();
+	    	if (evento != null) {	    		
+	    		tvDeportistas.getItems().clear();
+	    		tvDeportistas.getItems().addAll(DAOParticipacion.getParicipacionesByEvento(evento));
+	    		tvDeportistas.refresh();
+	    	}
+		} catch (OlimpiadasException e) {
+			lanzarError(e);
+		}
+    }
 
     @FXML
     void anadirDeporte(ActionEvent event) {
-
+    	abrirEditorDeporte(false);
     }
 
     @FXML
@@ -129,12 +163,12 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void anadirOlimpiada(ActionEvent event) {
-
+    	abrirEditorOlimpiada(false);
     }
 
     @FXML
     void borrarDeporte(ActionEvent event) {
-
+    	abrirEliminadorDeporte();
     }
 
     @FXML
@@ -154,12 +188,12 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void borrarOlimpiada(ActionEvent event) {
-
+    	abrirEliminadorOlimpiada();
     }
 
     @FXML
     void editarDeporte(ActionEvent event) {
-
+    	abrirEditorDeporte(true);
     }
 
     @FXML
@@ -179,26 +213,16 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void editarOlimpiada(ActionEvent event) {
-
-    }
-
-    @FXML
-    void cambioDeporte(ActionEvent event) {
-    	try {
-    		Evento evento = cbEvento.getSelectionModel().getSelectedItem();
-    		if (evento != null) {
-    			List<Participacion> participaciones = DAOParticipacion.getParicipacionesByEvento(evento);
-    			tvDeportistas.getItems().clear();
-    			tvDeportistas.getItems().addAll(participaciones);
-    			tvDeportistas.getSelectionModel().selectFirst();
-    		}
-    	} catch (OlimpiadasException e) {
-    		lanzarError(e);
-    	}
+    	abrirEditorOlimpiada(true);
     }
 
     @FXML
     void cambioEvento(ActionEvent event) {
+		filtrarDatos();
+    }
+
+    @FXML
+    void cambioDeporte(ActionEvent event) {
     	try {
     		Deporte deporte = cbDeportes.getSelectionModel().getSelectedItem();
     		if (deporte != null) {
@@ -227,17 +251,153 @@ public class OlimpiadasController implements Initializable {
     	}
     	
     }
+    
+    private void formatearTabla() {
+		tcNombre.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null && participacion.getDeportista() != null) {
+				return new SimpleStringProperty(StringUtils.trimToEmpty(participacion.getDeportista().getNombre()));
+			}
+			return new SimpleStringProperty("");
+		});
+
+		tcSexo.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null && participacion.getDeportista() != null && participacion.getDeportista().getSexo() != null) {
+				return new SimpleStringProperty(StringUtils.trimToEmpty(participacion.getDeportista().getSexo().getValor()));
+			}
+			return new SimpleStringProperty("");
+		});
+		
+		tcPeso.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null && participacion.getDeportista() != null) {
+				return new SimpleIntegerProperty(participacion.getDeportista().getPeso()).asObject();
+			}
+			return new SimpleIntegerProperty().asObject();
+		});
+		
+		tcAltura.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null && participacion.getDeportista() != null) {
+				return new SimpleIntegerProperty(participacion.getDeportista().getAltura()).asObject();
+			}
+			return new SimpleIntegerProperty().asObject();
+		});
+		
+		tcEdad.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null) {
+				return new SimpleIntegerProperty(participacion.getEdad()).asObject();
+			}
+			return new SimpleIntegerProperty().asObject();
+		});
+		
+		tcMedalla.setCellValueFactory(param -> {
+			Participacion participacion = param.getValue();
+			if (participacion != null) {
+				return new SimpleStringProperty(StringUtils.trimToEmpty(participacion.getMedalla()));
+			}
+			return new SimpleStringProperty("");
+		});
+    }
+    
+    private void abrirEditorOlimpiada(boolean editar) {
+		FlowPane root;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirOlimpiada.fxml"));
+			root = loader.load();
+			AnadirOlimpiadaController controlador = loader.getController();
+			
+			controlador
+			.setControladorPrincipal(this)
+			.setEditar(editar);
+			
+			Stage stage = new Stage();
+			if (editar) {				
+				stage.setTitle("EDITAR OLIMPIADA");
+			}
+			stage.initModality(Modality.WINDOW_MODAL);
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    
+    private void abrirEliminadorOlimpiada() {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarOlimpiada.fxml"));
+    		root = loader.load();
+    		BorrarOlimpiadaController controlador = loader.getController();
+    		
+    		controlador
+    		.setControladorPrincipal(this);
+    		
+    		Stage stage = new Stage();
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEditorDeporte(boolean editar) {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirDeporte.fxml"));
+    		root = loader.load();
+    		AnadirDeporteController controlador = loader.getController();
+    		
+    		controlador
+    		.setControladorPrincipal(this)
+    		.setEditar(editar);
+    		
+    		Stage stage = new Stage();
+    		if (editar) {				
+    			stage.setTitle("EDITAR DEPORTE");
+    		}
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    
+    private void abrirEliminadorDeporte() {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarDeporte.fxml"));
+    		root = loader.load();
+    		BorrarDeporteController controlador = loader.getController();
+    		
+    		controlador
+    		.setControladorPrincipal(this);
+    		
+    		Stage stage = new Stage();
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			List<Olimpiada> olimpiadas = DAOOlimpiada.getOlimpiadas();
-			cbOlimpiadas.getItems().addAll(olimpiadas);
-			cbOlimpiadas.getSelectionModel().selectFirst();
-		} catch (OlimpiadasException e) {
-			lanzarError(e);
-		}
-		
+		//INICIALIZAR EL SELECT DE OLIMPIADAS
+		refrescarOlimpiadas();
+		//FORMATEAR LA TABLA
+		formatearTabla();
 	}
 
 }

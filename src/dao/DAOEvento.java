@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,7 +88,7 @@ public class DAOEvento extends DAOBase{
 		}
 	}
 	
-	public static void modificarEvento (Evento evento) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarEvento (Evento evento) throws OlimpiadasException, SQLException {
 		if (evento != null && evento.getId() > 0) {
 			
 			String sql = "UPDATE Evento SET "
@@ -102,7 +101,6 @@ public class DAOEvento extends DAOBase{
 			try {
 				con = getConexion();
 				con.setAutoCommit(false);
-				
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, evento.getNombre());
 					ps.setInt(2, evento.getOlimpiada().getId());

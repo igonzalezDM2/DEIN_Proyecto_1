@@ -13,12 +13,15 @@ import java.util.regex.Pattern;
 
 import enums.Sexo;
 import excepciones.OlimpiadasException;
+import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import model.Animal;
 import model.Especie;
 
@@ -252,6 +255,10 @@ public class Utilidades {
 			return new java.sql.Date(date.getTime());
 		}
 		return null;
+	}
+	
+	public static void cerrarVentanaDesdeEvento(Event evento) {
+		((Stage)((Node)evento.getSource()).getScene().getWindow()).close();
 	}
 	
 }

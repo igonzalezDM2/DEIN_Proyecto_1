@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,7 +86,7 @@ public class DAOOlimpiada extends DAOBase {
 		}
 	}
 	
-	public static void modificarOlimpiada(Olimpiada olimpiada) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarOlimpiada(Olimpiada olimpiada) throws OlimpiadasException, SQLException {
 		if (olimpiada != null && olimpiada.getId() > 0) {
 			
 			String sql = "UPDATE Olimpiada SET "
