@@ -22,14 +22,14 @@ public class DAOEvento extends DAOBase{
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setInt(1, deporte.getId());
 				ResultSet rs = ps.executeQuery();
-				if (rs.first()) {
+				while (rs.next()) {
 					eventos.add(new Evento(rs));
 				}
 			} catch (SQLException e) {
 				throw new OlimpiadasException(e);
 			}
 		}
-		return null;
+		return eventos;
 	}
 	
 	public static Evento getEvento(int id) throws OlimpiadasException {

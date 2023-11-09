@@ -31,7 +31,7 @@ public class DAOParticipacion extends DAOBase{
 				throw new OlimpiadasException(e);
 			}
 		}
-		return null;
+		return participaciones;
 	}
 	
 	public static Participacion getParticipacion(Deportista deportista, Evento evento) throws OlimpiadasException {
@@ -154,7 +154,7 @@ public class DAOParticipacion extends DAOBase{
 				con.setAutoCommit(false);
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setInt(1, participacion.getDeportista().getId());
-				ps.setInt(1, participacion.getEvento().getId());
+				ps.setInt(2, participacion.getEvento().getId());
 				ps.executeUpdate();
 				con.commit();
 			} catch (SQLException e) {

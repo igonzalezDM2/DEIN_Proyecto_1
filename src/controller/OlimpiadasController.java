@@ -1,9 +1,12 @@
 package controller;
 
+import static utilities.Utilidades.confirmarSiNo;
 import static utilities.Utilidades.lanzarError;
+import static utilities.Utilidades.mostrarInfo;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -111,6 +114,8 @@ public class OlimpiadasController implements Initializable {
 			cbOlimpiadas.getItems().clear();
 			cbOlimpiadas.getItems().addAll(olimpiadas);
 			cbOlimpiadas.getSelectionModel().selectFirst();
+			refrescarDeportes();
+			refrescarEventos();
 		} catch (OlimpiadasException e) {
 			lanzarError(e);
 		}
@@ -119,10 +124,26 @@ public class OlimpiadasController implements Initializable {
     public void refrescarDeportes() {
     	Olimpiada olimpiada = cbOlimpiadas.getSelectionModel().getSelectedItem();
     	try {
-    		List<Deporte> deportes = DAODeporte.getDeportesByOlimpiada(olimpiada);
     		cbDeportes.getItems().clear();
-    		cbDeportes.getItems().addAll(deportes);
-    		cbDeportes.getSelectionModel().selectFirst();
+    		if (olimpiada != null) {    			
+    			List<Deporte> deportes = DAODeporte.getDeportesByOlimpiada(olimpiada);
+    			cbDeportes.getItems().addAll(deportes);
+    			cbDeportes.getSelectionModel().selectFirst();
+    		}
+    	} catch (OlimpiadasException e) {
+    		lanzarError(e);
+    	}
+    }
+    
+    public void refrescarEventos() {
+    	Deporte deporte = cbDeportes.getSelectionModel().getSelectedItem();
+    	try {
+    		cbEvento.getItems().clear();
+    		if (deporte != null) {    			
+    			List<Evento> eventos= DAOEvento.getEventosByDeporte(deporte);
+    			cbEvento.getItems().addAll(eventos);
+    			cbEvento.getSelectionModel().selectFirst();
+    		}
     	} catch (OlimpiadasException e) {
     		lanzarError(e);
     	}
@@ -153,12 +174,12 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void anadirEquipo(ActionEvent event) {
-
+    	abrirEditorEquipo(false);
     }
 
     @FXML
     void anadirEvento(ActionEvent event) {
-
+    	abrirEditorEvento(null);
     }
 
     @FXML
@@ -178,12 +199,25 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void borrarEquipo(ActionEvent event) {
-
+    	abrirEliminadorEquipo();
     }
 
     @FXML
     void borrarEvento(ActionEvent event) {
-
+    	Evento evento = cbEvento.getSelectionModel().getSelectedItem();
+    	if (evento != null) {    		
+    		confirmarSiNo("¿Desea eliminar el siguiente evento? " + evento.getNombre(),
+				() -> {
+					try {
+						DAOEvento.borrarEvento(evento);
+						mostrarInfo("El evento fue borrado");
+						refrescarEventos();
+					} catch (SQLException | OlimpiadasException e) {
+						lanzarError(e);
+					}
+				}
+    		);
+    	}
     }
 
     @FXML
@@ -203,12 +237,15 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void editarEquipo(ActionEvent event) {
-
+    	abrirEditorEquipo(true);
     }
 
     @FXML
     void editarEvento(ActionEvent event) {
-
+    	Evento evento = cbEvento.getSelectionModel().getSelectedItem();
+    	if (evento != null) {    		
+    		abrirEditorEvento(evento);
+    	}
     }
 
     @FXML
@@ -230,6 +267,7 @@ public class OlimpiadasController implements Initializable {
     			cbEvento.getItems().clear();
     			cbEvento.getItems().addAll(eventos);
     			cbEvento.getSelectionModel().selectFirst();
+    			refrescarEventos();
     		}
     	} catch (OlimpiadasException e) {
     		lanzarError(e);
@@ -245,6 +283,8 @@ public class OlimpiadasController implements Initializable {
     			cbDeportes.getItems().clear();
     			cbDeportes.getItems().addAll(deportes);
     			cbDeportes.getSelectionModel().selectFirst();
+    			refrescarDeportes();
+    			refrescarEventos();
     		}
     	} catch (OlimpiadasException e) {
     		lanzarError(e);
@@ -381,6 +421,72 @@ public class OlimpiadasController implements Initializable {
     		
     		controlador
     		.setControladorPrincipal(this);
+    		
+    		Stage stage = new Stage();
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEditorEvento(Evento seleccionado) {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirEvento.fxml"));
+    		root = loader.load();
+    		AnadirEventoController controlador = loader.getController();
+    		
+    		controlador
+    		.setControladorPrincipal(this)
+    		.setOlimpiadaPredeterminada(cbOlimpiadas.getSelectionModel().getSelectedItem())
+    		.setDeportePredeterminado(cbDeportes.getSelectionModel().getSelectedItem())
+    		.setSeleccionado(seleccionado);
+    		
+    		Stage stage = new Stage();
+    		if (seleccionado != null) {				
+    			stage.setTitle("EDITAR EVENTO");
+    		}
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    
+    private void abrirEditorEquipo(boolean editar) {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirEquipo.fxml"));
+    		root = loader.load();
+    		AnadirEquipoController controlador = loader.getController();
+    		
+    		controlador
+    		.setEditar(editar);
+    		
+    		Stage stage = new Stage();
+    		if (editar) {				
+    			stage.setTitle("EDITAR EQUIPO");
+    		}
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEliminadorEquipo() {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarEquipo.fxml"));
+    		root = loader.load();
     		
     		Stage stage = new Stage();
     		stage.initModality(Modality.WINDOW_MODAL);

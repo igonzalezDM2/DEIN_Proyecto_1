@@ -21,7 +21,7 @@ public class DAODeporte extends DAOBase{
 		try(Connection con = getConexion()) {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			if (rs.first()) {
+			while (rs.next()) {
 				deportes.add(new Deporte(rs));
 			}
 		} catch (SQLException e) {
@@ -38,7 +38,7 @@ public class DAODeporte extends DAOBase{
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setInt(1, olimpiada.getId());
 				ResultSet rs = ps.executeQuery();
-				if (rs.first()) {
+				while (rs.next()) {
 					deportes.add(new Deporte(rs));
 				}
 			} catch (SQLException e) {

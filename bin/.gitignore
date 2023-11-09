@@ -1,4 +1,5 @@
-/utilities/
 /controller/
-/fxml/
 /dao/
+/utilities/
+/fxml/
+/model/

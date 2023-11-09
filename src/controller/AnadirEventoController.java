@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Deporte;
 import model.Evento;
@@ -45,6 +46,15 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
 
     @FXML
     private TextField tfNombre;
+    
+    @FXML
+    private Label lblOlimpiada;
+    
+    @FXML
+    private Label lblDeporte;
+    
+    @FXML
+    private Label lblTitulo;
 
     @FXML
     void cancelar(ActionEvent event) {
@@ -114,11 +124,17 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
 	@SuppressWarnings("unchecked")
 	@Override
 	public AnadirEventoController setSeleccionado(Evento seleccionado) {
-		this.seleccionado = seleccionado;
-		cbOlimpiada.setDisable(seleccionado != null);
-		cbDeporte.setDisable(seleccionado != null);
-		olimpiadaPredeterminada = seleccionado.getOlimpiada();
-		deportePredeterminado = seleccionado.getDeporte();
+		if (seleccionado != null) {			
+			this.seleccionado = seleccionado;
+			cbOlimpiada.setDisable(seleccionado != null);
+			cbDeporte.setDisable(seleccionado != null);
+			olimpiadaPredeterminada = seleccionado.getOlimpiada();
+			deportePredeterminado = seleccionado.getDeporte();
+			
+			lblTitulo.setText("EDITAR EVENTO");
+			tfNombre.setText(seleccionado.getNombre());
+			
+		}
 		return this;
 	}
     

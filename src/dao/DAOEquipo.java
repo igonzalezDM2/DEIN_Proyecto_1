@@ -5,12 +5,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import excepciones.OlimpiadasException;
 import model.Equipo;
 
 
 public class DAOEquipo extends DAOBase{
+	
+	public static List<Equipo> getEquipos() throws OlimpiadasException {
+		List<Equipo> equipos = new LinkedList<>();
+		String sql = "SELECT * FROM Equipo";
+		try(Connection con = getConexion()) {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				equipos.add(new Equipo(rs));
+			}
+		} catch (SQLException e) {
+			throw new OlimpiadasException(e);
+		}
+		return equipos;
+	}
 	
 	public static Equipo getEquipo(int id) throws OlimpiadasException {
 		if (id > 0) {
@@ -66,7 +83,7 @@ public class DAOEquipo extends DAOBase{
 		}
 	}
 	
-	public static void modificarEquipo(Equipo equipo) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarEquipo(Equipo equipo) throws OlimpiadasException, SQLException {
 		if (equipo != null && equipo.getId() > 0) {
 			
 			String sql = "UPDATE Equipo SET "

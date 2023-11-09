@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -229,6 +230,19 @@ public class Utilidades {
 	public static void mostrarInfo(String info) {
 		Alert alert = new Alert(AlertType.INFORMATION, info, ButtonType.OK);
 		alert.show();
+	}
+	
+	@FunctionalInterface
+	public static interface ConfirmCallback {
+		void hacerCosas();
+	}
+	
+	public static void confirmarSiNo(String mensaje, ConfirmCallback callback) {
+		Alert alert = new Alert(AlertType.CONFIRMATION, mensaje, ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> confirm = alert.showAndWait();
+		if (ButtonType.YES.equals(confirm.orElse(null))) {
+			callback.hacerCosas();
+		}
 	}
 	
 	/**
