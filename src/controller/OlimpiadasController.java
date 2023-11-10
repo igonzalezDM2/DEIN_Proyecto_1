@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -340,6 +341,27 @@ public class OlimpiadasController implements Initializable {
 			}
 			return new SimpleStringProperty("");
 		});
+		
+		
+		MenuItem miAnadirParticipacion = new MenuItem("Añadir");
+		MenuItem miEditarParticipacion = new MenuItem("Editar");
+		MenuItem miBorrarParticipacion = new MenuItem("Borrar");
+		
+		ContextMenu cm = new ContextMenu(miAnadirParticipacion, miEditarParticipacion, miBorrarParticipacion);
+		cm.setOnShowing(e -> {
+			Participacion participacion = tvDeportistas.getSelectionModel().getSelectedItem();
+			if (participacion != null) {
+				miEditarParticipacion.setVisible(true);
+				miBorrarParticipacion.setVisible(true);
+			} else {
+				miEditarParticipacion.setVisible(false);
+				miBorrarParticipacion.setVisible(false);				
+			}
+		});
+		
+		
+		tvDeportistas.setContextMenu(cm);
+		
     }
     
     private void abrirEditorOlimpiada(boolean editar) {
