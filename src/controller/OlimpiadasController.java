@@ -169,7 +169,7 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void anadirDeportista(ActionEvent event) {
-
+    	abrirEditorDeportista(false);
     }
 
     @FXML
@@ -194,7 +194,7 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void borrarDeportista(ActionEvent event) {
-
+    	abrirEliminadorDeportista();
     }
 
     @FXML
@@ -232,7 +232,7 @@ public class OlimpiadasController implements Initializable {
 
     @FXML
     void editarDeportista(ActionEvent event) {
-
+    	abrirEditorDeportista(true);
     }
 
     @FXML
@@ -486,6 +486,45 @@ public class OlimpiadasController implements Initializable {
     	FlowPane root;
     	try {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarEquipo.fxml"));
+    		root = loader.load();
+    		
+    		Stage stage = new Stage();
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEditorDeportista(boolean editar) {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirDeportista.fxml"));
+    		root = loader.load();
+    		AnadirDeportistaController controlador = loader.getController();
+    		
+    		controlador
+    		.setEditar(editar);
+    		
+    		Stage stage = new Stage();
+    		if (editar) {				
+    			stage.setTitle("EDITAR DEPORTISTA");
+    		}
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEliminadorDeportista() {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarDeportista.fxml"));
     		root = loader.load();
     		
     		Stage stage = new Stage();

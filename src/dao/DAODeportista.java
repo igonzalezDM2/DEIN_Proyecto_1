@@ -1,16 +1,51 @@
 package dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import excepciones.OlimpiadasException;
 import model.Deportista;
+import model.Evento;
 
 
 public class DAODeportista extends DAOBase{
+	
+	public static List<Deportista> getDeportistasPorEvento(Evento evento) throws OlimpiadasException {
+		List<Deportista> lista = new LinkedList<>();
+		if (evento != null && evento.getId() > 0) {			
+			String sql = "SELECT * FROM Deportista INNER JOIN Participacion ON Participacion.id_deportista = Deportista.id_deportista WHERE Participacion.id_evento = ?";
+			try(Connection con = getConexion()) {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, evento.getId());
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					lista.add(new Deportista(rs));
+				}
+			} catch (SQLException e) {
+				throw new OlimpiadasException(e);
+			}
+		}
+		return lista;
+	}
+
+	public static List<Deportista> getDeportistas() throws OlimpiadasException {
+		List<Deportista> lista = new LinkedList<>();
+			String sql = "SELECT * FROM Deportista";
+			try(Connection con = getConexion()) {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					lista.add(new Deportista(rs));
+				}
+			} catch (SQLException e) {
+				throw new OlimpiadasException(e);
+			}
+		return lista;
+	}
 	
 	public static Deportista getDeportista(int id) throws OlimpiadasException {
 		if (id > 0) {
@@ -29,7 +64,7 @@ public class DAODeportista extends DAOBase{
 		return null;
 	}
 	
-	public static void anadirDeportista(Deportista deportista) throws OlimpiadasException, SQLException, IOException {
+	public static void anadirDeportista(Deportista deportista) throws OlimpiadasException, SQLException {
 		if (deportista != null) {
 			
 			String sql = "INSERT INTO Deportista ("
@@ -72,7 +107,7 @@ public class DAODeportista extends DAOBase{
 		}
 	}
 	
-	public static void modificarDeportista(Deportista deportista) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarDeportista(Deportista deportista) throws OlimpiadasException, SQLException {
 		if (deportista != null && deportista.getId() > 0) {
 			
 			String sql = "UPDATE Deportista SET "
