@@ -27,28 +27,25 @@
         <rowConstraints>
             <RowConstraints maxHeight="167.5455505635212" minHeight="10.0" prefHeight="60.363883613908634" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="167.5455505635212" minHeight="10.0" prefHeight="60.363883613908634" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="167.5455505635212" minHeight="10.0" prefHeight="60.363883613908634" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="208.18240936653484" minHeight="10.0" prefHeight="83.90946052605315" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="208.18240936653484" minHeight="10.0" prefHeight="83.90946052605315" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="293.0005523945759" minHeight="10.0" prefHeight="47.54569098679957" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Edad: " GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <FlowPane alignment="CENTER" prefHeight="88.0" prefWidth="548.0" style="-fx-hgap: 30;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <Label fx:id="lblEdad" text="Edad: " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <FlowPane alignment="CENTER" prefHeight="88.0" prefWidth="548.0" style="-fx-hgap: 30;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <children>
                   <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" text="Guardar" />
                   <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
                </children>
             </FlowPane>
-            <TextField fx:id="tfEdad" maxWidth="-Infinity" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Label fx:id="lblDeporte" text="Equipo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cbEquipo" prefHeight="25.0" prefWidth="435.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cbEvento" prefHeight="25.0" prefWidth="435.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="lblOlimpiada" text="Evento: " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfEdad" maxWidth="-Infinity" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="lblEquipo" text="Equipo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbEquipo" prefHeight="25.0" prefWidth="435.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <ComboBox fx:id="cbDeportista" prefHeight="25.0" prefWidth="435.0" GridPane.columnIndex="2" />
-            <Label fx:id="lblOlimpiada1" text="Deportista: " GridPane.columnIndex="1" />
-            <ComboBox fx:id="cbMedalla" maxWidth="-Infinity" prefHeight="25.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Label fx:id="lblDeporte1" text="Medalla: " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="lblDeporte" text="Deportista: " GridPane.columnIndex="1" />
+            <ComboBox fx:id="cbMedalla" maxWidth="-Infinity" prefHeight="25.0" prefWidth="135.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="lblMedalla" text="Medalla: " GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

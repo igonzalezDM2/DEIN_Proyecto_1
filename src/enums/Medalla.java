@@ -2,6 +2,8 @@ package enums;
 
 import java.util.Arrays;
 
+import utilities.StringUtils;
+
 public enum Medalla {
 	ORO("Gold"),
 	PLATA("Silver"),
@@ -20,7 +22,7 @@ public enum Medalla {
 	
 	public static Medalla getByValor(String valor) {
 		return Arrays.stream(Medalla.values())
-		.filter(s -> s.getValor().equals(valor))
-		.findFirst().orElse(null);
+		.filter(s -> StringUtils.equals(StringUtils.trimToNull(s.getValor()), valor))
+		.findFirst().orElse(NINGUNA);
 	}
 }

@@ -1,11 +1,21 @@
 package controller;
 
+import static utilities.StringUtils.isBlank;
+import static utilities.Utilidades.cerrarVentanaDesdeEvento;
+import static utilities.Utilidades.checkCampoInt;
+import static utilities.Utilidades.lanzarError;
+import static utilities.Utilidades.mostrarInfo;
 import static utilities.Utilidades.num2str;
+import static utilities.Utilidades.parseInt;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dao.DAODeportista;
+import dao.DAOEquipo;
+import dao.DAOParticipacion;
 import enums.Medalla;
 import excepciones.OlimpiadasException;
 import javafx.event.ActionEvent;
@@ -23,6 +33,8 @@ import model.Participacion;
 public class AnadirParticipacionController implements EditorDeObjeto<Participacion>, Initializable{
 
 	private Participacion seleccionado;
+	private Evento evento;
+	private OlimpiadasController controladorPrincipal;
 	
     @FXML
     private Button btnCancelar;
@@ -37,70 +49,88 @@ public class AnadirParticipacionController implements EditorDeObjeto<Participaci
     private ComboBox<Equipo> cbEquipo;
 
     @FXML
-    private ComboBox<Evento> cbEvento;
-
-    @FXML
     private ComboBox<Medalla> cbMedalla;
 
     @FXML
     private Label lblDeporte;
 
     @FXML
-    private Label lblDeporte1;
+    private Label lblEquipo;
 
     @FXML
     private Label lblOlimpiada;
 
     @FXML
-    private Label lblOlimpiada1;
+    private Label lblEdad;
+
+    @FXML
+    private Label lblMedalla;
 
     @FXML
     private Label lblTitulo;
+
 
     @FXML
     private TextField tfEdad;
 
     @FXML
     void cancelar(ActionEvent event) {
-
+    	cerrarVentanaDesdeEvento(event);
     }
 
     @FXML
     void guardar(ActionEvent event) {
-
+    	try {
+			comprobarDatos();
+			if (seleccionado != null) {
+				DAOParticipacion.modificarParticipacion(construirObjeto());
+				mostrarInfo("Se modificó la participación");
+			} else {
+				DAOParticipacion.anadirParticipacion(construirObjeto());
+				mostrarInfo("Se añadió la participación");
+			}
+			cerrarVentanaDesdeEvento(event);
+			controladorPrincipal.filtrarDatos();
+		} catch (OlimpiadasException | SQLException e) {
+			lanzarError(e);
+		}
     }
 
 	@Override
 	public void comprobarDatos() throws OlimpiadasException {
-		// TODO Auto-generated method stub
-		
+		if (evento == null) {
+			throw new OlimpiadasException("Ningún evento seleccionado");
+		}
+		if (!isBlank(tfEdad.getText())) {
+			checkCampoInt(tfEdad);
+		}
+		//Los demás son "comboboxes" que por defecto tienen un valor seleccionado
 	}
 
 	@Override
 	public Participacion construirObjeto() throws OlimpiadasException {
-		// TODO Auto-generated method stub
-		return null;
+		return new Participacion()
+				.setDeportista(cbDeportista.getSelectionModel().getSelectedItem())
+				.setEvento(evento)
+				.setEquipo(cbEquipo.getSelectionModel().getSelectedItem())
+				.setEdad(parseInt(tfEdad.getText()))
+				.setMedalla(cbMedalla.getSelectionModel().getSelectedItem());
 	}
 
 	@Override
 	public void rellenarEditor() {
 		if (seleccionado != null) {
 			cbDeportista.setDisable(true);
-			cbEvento.setDisable(true);
 			Optional<Deportista> optDeportista = cbDeportista.getItems().stream().filter(d -> d.getId() == seleccionado.getDeportista().getId()).findFirst();
-			Optional<Evento> optEvento = cbEvento.getItems().stream().filter(e -> e.getId() == seleccionado.getEvento().getId()).findFirst();
 			Optional<Equipo> optEquipo= cbEquipo.getItems().stream().filter(e -> e.getId() == seleccionado.getEquipo().getId()).findFirst();
 			if (optDeportista.isPresent()) {
 				cbDeportista.getSelectionModel().select(optDeportista.get());				
-			}
-			if (optEvento.isPresent()) {
-				cbEvento.getSelectionModel().select(optEvento.get());				
 			}
 			if (optEquipo.isPresent()) {
 				cbEquipo.getSelectionModel().select(optEquipo.get());				
 			}
 			tfEdad.setText(num2str(seleccionado.getEdad()));
-			cbMedalla.getSelectionModel().select(Medalla.getByValor(seleccionado.getMedalla()));
+			cbMedalla.getSelectionModel().select(seleccionado.getMedalla());
 		}
 		
 	}
@@ -109,13 +139,34 @@ public class AnadirParticipacionController implements EditorDeObjeto<Participaci
 	@Override
 	public AnadirParticipacionController setSeleccionado(Participacion seleccionado) {
 		this.seleccionado = seleccionado;
+		rellenarEditor();
+		return this;
+	}
+	
+	public AnadirParticipacionController setEvento(Evento evento) {
+		this.evento = evento;
+		return this;
+	}
+	
+	public AnadirParticipacionController setControladorPrincipal(OlimpiadasController controladorPrincipal) {
+		this.controladorPrincipal = controladorPrincipal;
 		return this;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbMedalla.getItems().addAll(Medalla.values());
-		cbMedalla.getSelectionModel().selectFirst();
+		try {
+			cbDeportista.getItems().addAll(DAODeportista.getDeportistas());
+			cbDeportista.getSelectionModel().selectFirst();
+			cbEquipo.getItems().addAll(DAOEquipo.getEquipos());
+			cbEquipo.getSelectionModel().selectFirst();
+			cbMedalla.getItems().addAll(Medalla.values());
+			cbMedalla.getSelectionModel().selectFirst();
+		} catch (OlimpiadasException e) {
+			lanzarError(e);
+		}
+		
+		
 		
 	}
 

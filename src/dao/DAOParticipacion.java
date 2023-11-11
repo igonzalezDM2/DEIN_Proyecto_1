@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +23,7 @@ public class DAOParticipacion extends DAOBase{
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setInt(1, evento.getId());
 				ResultSet rs = ps.executeQuery();
-				if (rs.first()) {
+				while (rs.next()) {
 					participaciones.add(new Participacion(rs));
 				}
 			} catch (SQLException e) {
@@ -79,7 +78,7 @@ public class DAOParticipacion extends DAOBase{
 					ps.setInt(2, participacion.getEvento().getId());
 					ps.setInt(3, participacion.getEquipo().getId());
 					ps.setInt(4, participacion.getEdad());
-					ps.setString(5, participacion.getMedalla());
+					ps.setString(5, participacion.getMedalla().getValor());
 					
 					ps.executeUpdate();
 					
@@ -97,7 +96,7 @@ public class DAOParticipacion extends DAOBase{
 		}
 	}
 	
-	public static void modificarParticipacion (Participacion participacion) throws OlimpiadasException, SQLException, IOException {
+	public static void modificarParticipacion (Participacion participacion) throws OlimpiadasException, SQLException {
 		if (participacion != null &&
 				participacion.getDeportista() != null &&
 				participacion.getDeportista().getId() > 0 &&
@@ -122,7 +121,7 @@ public class DAOParticipacion extends DAOBase{
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setInt(1, participacion.getEquipo().getId());
 					ps.setInt(2, participacion.getEdad());
-					ps.setString(3, participacion.getMedalla());
+					ps.setString(3, participacion.getMedalla().getValor());
 					ps.setInt(4, participacion.getDeportista().getId());
 					ps.setInt(5, participacion.getEvento().getId());
 					

@@ -3,8 +3,6 @@ package utilities;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -12,7 +10,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import enums.Sexo;
 import excepciones.OlimpiadasException;
 import javafx.event.Event;
 import javafx.scene.Node;
@@ -23,8 +20,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import model.Animal;
-import model.Especie;
 
 /**
  * Clase de utilidades para el proyecto.
@@ -33,34 +28,6 @@ public class Utilidades {
 	
 	private Utilidades() throws IllegalAccessException {
 		throw new IllegalAccessException("Clase de utilidad");
-	}
-	
-	/**
-	 * Mapea un ResultSet a un objeto Animal.
-	 * 
-	 * @param rs ResultSet a mapear
-	 * @return Objeto Animal mapeado
-	 * @throws OlimpiadasException si ocurre un error al mapear el ResultSet
-	 */
-	public static Animal mapAnimal(ResultSet rs) throws OlimpiadasException {
-		try {
-			return new Animal()
-					.setCodigo(rs.getString("codigo"))
-					.setNombre(rs.getString("nombre_animal"))
-					.setEspecie(new Especie()
-							.setId(rs.getInt("id_especie"))
-							.setNombre(rs.getString("nombre_especie")))
-					.setRaza(rs.getString("raza"))
-					.setSexo(Sexo.getByValor(rs.getString("sexo")))
-					.setEdad(rs.getInt("edad"))
-					.setPeso(rs.getDouble("peso"))
-					.setObservaciones(rs.getString("observaciones"))
-					.setPrimeraConsulta(rs.getDate("primera_consulta") != null ? new Date(rs.getDate("primera_consulta").getTime()) : null)
-					.setFoto(rs.getBinaryStream("foto").readAllBytes());
-			
-		} catch (SQLException | IOException e) {
-			throw new OlimpiadasException(e);
-		}
 	}
 	
 	/**

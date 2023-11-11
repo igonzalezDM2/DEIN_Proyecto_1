@@ -1,3 +1,5 @@
-/fxml/
 /controller/
-/enums/
+/model/
+/utilities/
+/fxml/
+/sql/

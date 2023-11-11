@@ -137,13 +137,15 @@ public class OlimpiadasController implements Initializable {
     }
     
     public void refrescarEventos() {
+    	Olimpiada olimpiada = cbOlimpiadas.getSelectionModel().getSelectedItem();
     	Deporte deporte = cbDeportes.getSelectionModel().getSelectedItem();
     	try {
     		cbEvento.getItems().clear();
     		if (deporte != null) {    			
-    			List<Evento> eventos= DAOEvento.getEventosByDeporte(deporte);
+    			List<Evento> eventos= DAOEvento.getEventosByDeporteYOlimpiada(deporte, olimpiada);
     			cbEvento.getItems().addAll(eventos);
     			cbEvento.getSelectionModel().selectFirst();
+    			filtrarDatos();
     		}
     	} catch (OlimpiadasException e) {
     		lanzarError(e);
@@ -152,9 +154,9 @@ public class OlimpiadasController implements Initializable {
     
     public void filtrarDatos() {
     	try {
+    		tvDeportistas.getItems().clear();
 	    	Evento evento = cbEvento.getSelectionModel().getSelectedItem();
 	    	if (evento != null) {	    		
-	    		tvDeportistas.getItems().clear();
 	    		tvDeportistas.getItems().addAll(DAOParticipacion.getParicipacionesByEvento(evento));
 	    		tvDeportistas.refresh();
 	    	}
@@ -262,9 +264,10 @@ public class OlimpiadasController implements Initializable {
     @FXML
     void cambioDeporte(ActionEvent event) {
     	try {
+    		Olimpiada olimpiada = cbOlimpiadas.getSelectionModel().getSelectedItem();
     		Deporte deporte = cbDeportes.getSelectionModel().getSelectedItem();
     		if (deporte != null) {
-    			List<Evento> eventos = DAOEvento.getEventosByDeporte(deporte);
+    			List<Evento> eventos = DAOEvento.getEventosByDeporteYOlimpiada(deporte, olimpiada);
     			cbEvento.getItems().clear();
     			cbEvento.getItems().addAll(eventos);
     			cbEvento.getSelectionModel().selectFirst();
@@ -337,7 +340,7 @@ public class OlimpiadasController implements Initializable {
 		tcMedalla.setCellValueFactory(param -> {
 			Participacion participacion = param.getValue();
 			if (participacion != null) {
-				return new SimpleStringProperty(StringUtils.trimToEmpty(participacion.getMedalla()));
+				return new SimpleStringProperty(participacion.getMedalla().getValor());
 			}
 			return new SimpleStringProperty("");
 		});
@@ -347,15 +350,53 @@ public class OlimpiadasController implements Initializable {
 		MenuItem miEditarParticipacion = new MenuItem("Editar");
 		MenuItem miBorrarParticipacion = new MenuItem("Borrar");
 		
-		ContextMenu cm = new ContextMenu(miAnadirParticipacion, miEditarParticipacion, miBorrarParticipacion);
-		cm.setOnShowing(e -> {
+		miAnadirParticipacion.setOnAction(e -> {
+			Evento evento = cbEvento.getSelectionModel().getSelectedItem();
+			abrirEditorParticipacion(null, evento);
+		});
+		
+		miEditarParticipacion.setOnAction(e -> {
+			Evento evento = cbEvento.getSelectionModel().getSelectedItem();
 			Participacion participacion = tvDeportistas.getSelectionModel().getSelectedItem();
 			if (participacion != null) {
-				miEditarParticipacion.setVisible(true);
-				miBorrarParticipacion.setVisible(true);
+				abrirEditorParticipacion(participacion, evento);
+			}
+		});
+		
+		miBorrarParticipacion.setOnAction(e -> {
+			Participacion participacion = tvDeportistas.getSelectionModel().getSelectedItem();
+			if (participacion != null) {				
+				confirmarSiNo("¿Desea eliminar la participación seleccionada?", () -> {
+					try {
+						DAOParticipacion.borrarParticipacion(participacion);
+						mostrarInfo("La participación fue borrada");
+						filtrarDatos();
+					} catch (SQLException | OlimpiadasException ex) {
+						lanzarError(ex);
+					}
+					
+				});
+			}
+		});
+		
+		ContextMenu cm = new ContextMenu(miAnadirParticipacion, miEditarParticipacion, miBorrarParticipacion);
+		cm.setOnShowing(e -> {
+			Evento evento = cbEvento.getSelectionModel().getSelectedItem();
+			Participacion participacion = tvDeportistas.getSelectionModel().getSelectedItem();
+			if (evento != null) {
+				miAnadirParticipacion.setVisible(true);
+				if (participacion != null) {
+					miEditarParticipacion.setVisible(true);
+					miBorrarParticipacion.setVisible(true);
+				} else {
+					miEditarParticipacion.setVisible(false);
+					miBorrarParticipacion.setVisible(false);				
+				}
 			} else {
+				miAnadirParticipacion.setVisible(false);
 				miEditarParticipacion.setVisible(false);
-				miBorrarParticipacion.setVisible(false);				
+				miBorrarParticipacion.setVisible(false);
+				
 			}
 		});
 		
@@ -550,6 +591,33 @@ public class OlimpiadasController implements Initializable {
     		root = loader.load();
     		
     		Stage stage = new Stage();
+    		stage.initModality(Modality.WINDOW_MODAL);
+    		Scene scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.showAndWait();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    private void abrirEditorParticipacion(Participacion participacion, Evento evento) {
+    	FlowPane root;
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirParticipacion.fxml"));
+    		root = loader.load();
+    		AnadirParticipacionController controlador = loader.getController();
+    		
+    		controlador
+    		.setEvento(evento)
+    		.setSeleccionado(participacion)
+    		.setControladorPrincipal(this);
+    		
+    		Stage stage = new Stage();
+    		if (participacion != null) {				
+    			stage.setTitle("EDITAR PARTICIPACIÓN");
+    		} else {
+    			stage.setTitle("AÑADIR PARTICIPACIÓN");    			
+    		}
     		stage.initModality(Modality.WINDOW_MODAL);
     		Scene scene = new Scene(root);
     		stage.setScene(scene);

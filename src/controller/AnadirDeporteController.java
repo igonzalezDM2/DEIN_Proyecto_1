@@ -55,6 +55,7 @@ public class AnadirDeporteController implements EditorDeObjeto<Deporte>, Initial
     @FXML
     void guardar(ActionEvent event) {
     	try {
+    		comprobarDatos();
 	    	if (seleccionado == null) {
 				DAODeporte.anadirDeporte(construirObjeto());
 	    	} else {

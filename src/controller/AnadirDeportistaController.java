@@ -99,6 +99,7 @@ public class AnadirDeportistaController implements EditorDeObjeto<Deportista>, I
     @FXML
     void guardar(ActionEvent event) {
 		try {
+			comprobarDatos();
 	    	if (seleccionado != null) {
 	    		DAODeportista.modificarDeportista(construirObjeto().setId(seleccionado.getId()));
 	    		mostrarInfo("El deportista se editó");

@@ -10,9 +10,29 @@ import java.util.List;
 import excepciones.OlimpiadasException;
 import model.Deporte;
 import model.Evento;
+import model.Olimpiada;
 
 
 public class DAOEvento extends DAOBase{
+	
+	public static List<Evento> getEventosByDeporteYOlimpiada(Deporte deporte, Olimpiada olimpiada) throws OlimpiadasException {
+		List<Evento> eventos = new LinkedList<>();
+		if (deporte != null && deporte.getId() > 0 && olimpiada != null && olimpiada.getId() > 0) {
+			String sql = "SELECT * FROM Evento WHERE id_deporte = ? AND id_olimpiada = ?";
+			try(Connection con = getConexion()) {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, deporte.getId());
+				ps.setInt(2, olimpiada.getId());
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					eventos.add(new Evento(rs));
+				}
+			} catch (SQLException e) {
+				throw new OlimpiadasException(e);
+			}
+		}
+		return eventos;
+	}
 	
 	public static List<Evento> getEventosByDeporte(Deporte deporte) throws OlimpiadasException {
 		List<Evento> eventos = new LinkedList<>();

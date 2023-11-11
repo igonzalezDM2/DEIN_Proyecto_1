@@ -7,6 +7,7 @@ import java.util.Objects;
 import dao.DAODeportista;
 import dao.DAOEquipo;
 import dao.DAOEvento;
+import enums.Medalla;
 import excepciones.OlimpiadasException;
 
 public class Participacion {
@@ -15,7 +16,7 @@ public class Participacion {
 	private Evento evento;
 	private Equipo equipo;
 	private Integer edad;
-	private String medalla;
+	private Medalla medalla;
 	
 	public Participacion() {}
 	public Participacion(ResultSet rs) throws OlimpiadasException {
@@ -24,7 +25,7 @@ public class Participacion {
 			evento = DAOEvento.getEvento(rs.getInt("id_evento"));
 			equipo = DAOEquipo.getEquipo(rs.getInt("id_equipo"));
 			edad = rs.getInt("edad") > 0 ? rs.getInt("edad") : null;
-			medalla = rs.getString("medalla");
+			medalla = Medalla.getByValor(rs.getString("medalla"));
 		} catch (SQLException e) {
 			throw new OlimpiadasException(e);
 		}
@@ -57,10 +58,13 @@ public class Participacion {
 		this.edad = edad;
 		return this;
 	}
-	public String getMedalla() {
+	public Medalla getMedalla() {
+		if (medalla == null) {
+			return Medalla.NINGUNA;
+		}
 		return medalla;
 	}
-	public Participacion setMedalla(String medalla) {
+	public Participacion setMedalla(Medalla medalla) {
 		this.medalla = medalla;
 		return this;
 	}
