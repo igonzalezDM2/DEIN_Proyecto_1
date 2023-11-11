@@ -34,42 +34,86 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.Deportista;
 import utilities.StringUtils;
 
+/**
+ * Controlador para añadir un deportista.
+ */
 public class AnadirDeportistaController implements EditorDeObjeto<Deportista>, Initializable {
 	
+	/**
+	 * Imagen cargada.
+	 */
 	private byte[] imagenCargada;
+	
+	/**
+	 * Deportista seleccionado.
+	 */
 	private Deportista seleccionado;
 	
-
+	/**
+	 * Botón para añadir imagen.
+	 */
     @FXML
     private Button btnAnadirImagen;
 
+    /**
+     * Botón para cancelar.
+     */
     @FXML
     private Button btnCancelar;
 
+    /**
+     * Botón para guardar.
+     */
     @FXML
     private Button btnGuardar;
 
+    /**
+     * ComboBox para seleccionar deportista.
+     */
     @FXML
     private ComboBox<Deportista> cbDeportista;
 
+    /**
+     * ComboBox para seleccionar sexo.
+     */
     @FXML
     private ComboBox<Sexo> cbSexo;
 
+    /**
+     * ImageView para mostrar la foto.
+     */
     @FXML
     private ImageView ivFoto;
 
+    /**
+     * Label para mostrar el nombre del deportista.
+     */
     @FXML
     private Label lblDeportista;
 
+    /**
+     * TextField para ingresar la altura.
+     */
     @FXML
     private TextField tfAltura;
 
+    /**
+     * TextField para ingresar el nombre.
+     */
     @FXML
     private TextField tfNombre;
 
+    /**
+     * TextField para ingresar el peso.
+     */
     @FXML
     private TextField tfPeso;
 
+    /**
+     * Método para añadir una imagen.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void anadirImagen(ActionEvent event) {
     	FileChooser fc = new FileChooser();
@@ -85,17 +129,30 @@ public class AnadirDeportistaController implements EditorDeObjeto<Deportista>, I
     	}
     }
     
+    /**
+     * Método para manejar el cambio de deportista seleccionado.
+     */
     @FXML
     void cambioDeportista() {
     	setSeleccionado(cbDeportista.getSelectionModel().getSelectedItem());
     	rellenarEditor();
     }
 
+    /**
+     * Método para cancelar la acción.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void cancelar(ActionEvent event) {
     	cerrarVentanaDesdeEvento(event);
     }
 
+    /**
+     * Método para guardar la información del deportista.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void guardar(ActionEvent event) {
 		try {
@@ -113,6 +170,11 @@ public class AnadirDeportistaController implements EditorDeObjeto<Deportista>, I
 		}
     }
     
+    /**
+     * Método para establecer si se está editando un deportista.
+     * 
+     * @param editar true si se está editando, false de lo contrario
+     */
     public void setEditar(boolean editar) {
     	if (editar) {
     		try {
@@ -127,6 +189,9 @@ public class AnadirDeportistaController implements EditorDeObjeto<Deportista>, I
     	}
     }
     
+    /**
+     * Método para mostrar la imagen cargada.
+     */
     private void mostrarImagen() {
     	try {
 			ivFoto.setImage(byte2Image(imagenCargada));

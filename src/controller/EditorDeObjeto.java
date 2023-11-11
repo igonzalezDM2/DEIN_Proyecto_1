@@ -11,8 +11,8 @@ public interface EditorDeObjeto<E> {
     public void comprobarDatos() throws OlimpiadasException;
     
     /**
-     * Método para construir un animal.
-     * @return El animal construido.
+     * Método para construir un objeto.
+     * @return El objeto construido.
      * @throws OlimpiadasException Si los datos no son válidos.
      */
     public E construirObjeto() throws OlimpiadasException;
@@ -24,3 +24,4 @@ public interface EditorDeObjeto<E> {
     
     public <T extends EditorDeObjeto<E>> T setSeleccionado(E seleccionado);
 }
+

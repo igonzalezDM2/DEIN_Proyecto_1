@@ -22,39 +22,78 @@ import javafx.scene.control.TextField;
 import model.Equipo;
 import utilities.StringUtils;
 
+/**
+ * Controlador para añadir un equipo.
+ */
 public class AnadirEquipoController implements EditorDeObjeto<Equipo>, Initializable {
 	
+	/**
+	 * Equipo seleccionado.
+	 */
 	private Equipo seleccionado;
 
+    /**
+     * Botón para cancelar.
+     */
     @FXML
     private Button btnCancelar;
 
+    /**
+     * Botón para guardar.
+     */
     @FXML
     private Button btnGuardar;
 
+    /**
+     * ComboBox para seleccionar un equipo.
+     */
     @FXML
     private ComboBox<Equipo> cbEquipo;
 
+    /**
+     * Label para mostrar el equipo seleccionado.
+     */
     @FXML
     private Label lblEquipo;
 
+    /**
+     * TextField para ingresar el nombre del equipo.
+     */
     @FXML
     private TextField tfNombre;
 
+    /**
+     * TextField para ingresar las iniciales del equipo.
+     */
     @FXML
     private TextField tfIniciales;
 
+    /**
+     * Método para cambiar el equipo seleccionado.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void cambioEquipo(ActionEvent event) {
     	setSeleccionado(cbEquipo.getSelectionModel().getSelectedItem());
     	rellenarEditor();
     }
 
+    /**
+     * Método para cancelar la acción.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void cancelar(ActionEvent event) {
     	cerrarVentanaDesdeEvento(event);
     }
 
+    /**
+     * Método para guardar la información del equipo.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void guardar(ActionEvent event) {
     	try {
@@ -99,6 +138,12 @@ public class AnadirEquipoController implements EditorDeObjeto<Equipo>, Initializ
 		return this;
 	}
 	
+	/**
+	 * Método para establecer si se está editando un equipo.
+	 * 
+	 * @param editar true si se está editando, false de lo contrario
+	 * @return el controlador actualizado
+	 */
 	public AnadirEquipoController setEditar(boolean editar) {
 		if (editar) {
 			try {

@@ -25,129 +25,162 @@ import model.Olimpiada;
 import utilities.StringUtils;
 import utilities.Utilidades;
 
+/**
+ * Controlador para añadir una Olimpiada.
+ */
 public class AnadirOlimpiadaController implements EditorDeObjeto<Olimpiada>, Initializable {
-	private Olimpiada seleccionado;
-	private OlimpiadasController controladorPrincipal;
-
+    /**
+     * Olimpiada seleccionada.
+     */
+    private Olimpiada seleccionado;
+    
+    /**
+     * Controlador principal de las Olimpiadas.
+     */
+    private OlimpiadasController controladorPrincipal;
+    
     @FXML
     private Button btnCancelar;
-
+    
     @FXML
     private Button btnGuardar;
-
+    
     @FXML
     private ComboBox<Temporada> cbTemporada;
-
+    
     @FXML
     private ComboBox<Olimpiada> cbOlimpiada;
     
     @FXML
     private Label lblOlimpiada;
-
+    
     @FXML
     private TextField tfAnio;
-
+    
     @FXML
     private TextField tfCiudad;
-
+    
     @FXML
     private TextField tfNombre;
     
+    /**
+     * Método para cambiar la Olimpiada seleccionada.
+     */
     @FXML
     void cambioOlimpiada() {
-    	
+        
     }
-
+    
+    /**
+     * Método para cancelar la acción.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void cancelar(ActionEvent event) {
-    	cerrarVentanaDesdeEvento(event);
+        cerrarVentanaDesdeEvento(event);
     }
-
+    
+    /**
+     * Método para guardar la Olimpiada.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void guardar(ActionEvent event) {
-    	try {
-			if (seleccionado == null) {
-				anadirOlimpiada(construirObjeto());
-				mostrarInfo("La olimpiada se añadió");
-			} else {
-				modificarOlimpiada(construirObjeto().setId(seleccionado.getId()));
-				mostrarInfo("La olimpiada se modificó");
-			}
-			controladorPrincipal.refrescarOlimpiadas();
-			cerrarVentanaDesdeEvento(event);
-		} catch (OlimpiadasException | SQLException e) {
-			lanzarError(e);
-		}
+        try {
+            if (seleccionado == null) {
+                anadirOlimpiada(construirObjeto());
+                mostrarInfo("La olimpiada se añadió");
+            } else {
+                modificarOlimpiada(construirObjeto().setId(seleccionado.getId()));
+                mostrarInfo("La olimpiada se modificó");
+            }
+            controladorPrincipal.refrescarOlimpiadas();
+            cerrarVentanaDesdeEvento(event);
+        } catch (OlimpiadasException | SQLException e) {
+            lanzarError(e);
+        }
     }
-
-	@Override
-	public void comprobarDatos() throws OlimpiadasException {
-    	Utilidades.checkCampoStrNotNull(tfNombre);
-    	Utilidades.checkCampoInt(tfAnio);
-    	Utilidades.checkCampoStrNotNull(tfCiudad);
-	}
-
-	@Override
-	public Olimpiada construirObjeto() throws OlimpiadasException {
-		return new Olimpiada()
-				.setNombre(StringUtils.trimToEmpty(tfNombre.getText()))
-				.setAnio(Utilidades.parseInt(tfAnio.getText()))
-				.setTemporada(cbTemporada.getValue()) //NO PUEDE SER NUNCA NULO PORQUE SE SE SELECCIONA EL PRIMERO POR DEFECTO
-				.setCiudad(StringUtils.trimToEmpty(tfCiudad.getText()));
-	}
-
-	@Override
-	public void rellenarEditor() {
-		if (seleccionado != null) {
-			tfNombre.setText(trimToEmpty(seleccionado.getNombre()));
-			tfAnio.setText(Utilidades.num2str(seleccionado.getAnio()));
-			cbTemporada.getSelectionModel().select(seleccionado.getTemporada());
-			tfCiudad.setText(trimToEmpty(seleccionado.getCiudad()));
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public AnadirOlimpiadaController setSeleccionado(Olimpiada seleccionado) {
-		this.seleccionado = seleccionado;
-		rellenarEditor();
-		return this;
-	}
-	
-	public AnadirOlimpiadaController setControladorPrincipal(OlimpiadasController controladorPrincipal) {
-		this.controladorPrincipal = controladorPrincipal;
-		return this;
-	}
-	
-	public AnadirOlimpiadaController setEditar(boolean editar) {
-		if (editar) {
-			try {
-				cbOlimpiada.setVisible(true);
-				lblOlimpiada.setVisible(true);
-				cbOlimpiada.getItems().addAll(DAOOlimpiada.getOlimpiadas());
-				cbOlimpiada.getSelectionModel().selectFirst();
-				this.seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();
-				cbOlimpiada.setOnAction(event -> {
-					this.seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();					
-					rellenarEditor();
-				});
-			} catch (OlimpiadasException e) {
-				lanzarError(e);
-			}
-		}
-		return this;
-	}
-	
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		cbOlimpiada.setVisible(false);
-		lblOlimpiada.setVisible(false);
-		cbTemporada.getItems().addAll(Temporada.values());
-		cbTemporada.getSelectionModel().selectFirst();
-	}
-
+    
+    @Override
+    public void comprobarDatos() throws OlimpiadasException {
+        Utilidades.checkCampoStrNotNull(tfNombre);
+        Utilidades.checkCampoInt(tfAnio);
+        Utilidades.checkCampoStrNotNull(tfCiudad);
+    }
+    
+    @Override
+    public Olimpiada construirObjeto() throws OlimpiadasException {
+        return new Olimpiada()
+                .setNombre(StringUtils.trimToEmpty(tfNombre.getText()))
+                .setAnio(Utilidades.parseInt(tfAnio.getText()))
+                .setTemporada(cbTemporada.getValue()) //NO PUEDE SER NUNCA NULO PORQUE SE SE SELECCIONA EL PRIMERO POR DEFECTO
+                .setCiudad(StringUtils.trimToEmpty(tfCiudad.getText()));
+    }
+    
+    @Override
+    public void rellenarEditor() {
+        if (seleccionado != null) {
+            tfNombre.setText(trimToEmpty(seleccionado.getNombre()));
+            tfAnio.setText(Utilidades.num2str(seleccionado.getAnio()));
+            cbTemporada.getSelectionModel().select(seleccionado.getTemporada());
+            tfCiudad.setText(trimToEmpty(seleccionado.getCiudad()));
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public AnadirOlimpiadaController setSeleccionado(Olimpiada seleccionado) {
+        this.seleccionado = seleccionado;
+        rellenarEditor();
+        return this;
+    }
+    
+    /**
+     * Método para establecer el controlador principal de las Olimpiadas.
+     * 
+     * @param controladorPrincipal el controlador principal
+     * @return el controlador de añadir Olimpiada
+     */
+    public AnadirOlimpiadaController setControladorPrincipal(OlimpiadasController controladorPrincipal) {
+        this.controladorPrincipal = controladorPrincipal;
+        return this;
+    }
+    
+    /**
+     * Método para establecer si se está editando una Olimpiada.
+     * 
+     * @param editar true si se está editando, false de lo contrario
+     * @return el controlador de añadir Olimpiada
+     */
+    public AnadirOlimpiadaController setEditar(boolean editar) {
+        if (editar) {
+            try {
+                cbOlimpiada.setVisible(true);
+                lblOlimpiada.setVisible(true);
+                cbOlimpiada.getItems().addAll(DAOOlimpiada.getOlimpiadas());
+                cbOlimpiada.getSelectionModel().selectFirst();
+                this.seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();
+                cbOlimpiada.setOnAction(event -> {
+                    this.seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();                    
+                    rellenarEditor();
+                });
+            } catch (OlimpiadasException e) {
+                lanzarError(e);
+            }
+        }
+        return this;
+    }
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        cbOlimpiada.setVisible(false);
+        lblOlimpiada.setVisible(false);
+        cbTemporada.getItems().addAll(Temporada.values());
+        cbTemporada.getSelectionModel().selectFirst();
+    }
     
     
-
+    
 }

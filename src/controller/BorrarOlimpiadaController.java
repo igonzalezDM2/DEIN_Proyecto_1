@@ -18,10 +18,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import model.Olimpiada;
 
+/**
+ * Controlador para borrar una Olimpiada.
+ */
 public class BorrarOlimpiadaController implements Initializable {
 
-	private OlimpiadasController controladorPrincipal;
-	
+    /**
+     * Controlador principal.
+     */
+    private OlimpiadasController controladorPrincipal;
+    
     @FXML
     private Button btnBorrar;
 
@@ -34,39 +40,55 @@ public class BorrarOlimpiadaController implements Initializable {
     @FXML
     private Label lblOlimpiada;
 
+    /**
+     * Método para borrar una Olimpiada.
+     * 
+     * @param event el evento del botón borrar
+     */
     @FXML
     void borrar(ActionEvent event) {
-    	Olimpiada seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();
-    	if (seleccionado != null) {
-    		try {
-				DAOOlimpiada.borrarOlimpiada(seleccionado);
-				controladorPrincipal.refrescarOlimpiadas();
-				cerrarVentanaDesdeEvento(event);
-				mostrarInfo("La olimpiada se borró");
-			} catch (SQLException | OlimpiadasException e) {
-				lanzarError(e);
-			}
-    	}
+        Olimpiada seleccionado = cbOlimpiada.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            try {
+                DAOOlimpiada.borrarOlimpiada(seleccionado);
+                controladorPrincipal.refrescarOlimpiadas();
+                cerrarVentanaDesdeEvento(event);
+                mostrarInfo("La olimpiada se borró");
+            } catch (SQLException | OlimpiadasException e) {
+                lanzarError(e);
+            }
+        }
     }
     
+    /**
+     * Método para cancelar la operación de borrado.
+     * 
+     * @param event el evento del botón cancelar
+     */
     @FXML
     void cancelar(ActionEvent event) {
-    	cerrarVentanaDesdeEvento(event);
+        cerrarVentanaDesdeEvento(event);
     }
     
+    /**
+     * Establece el controlador principal.
+     * 
+     * @param controladorPrincipal el controlador principal
+     * @return el controlador actualizado
+     */
     public BorrarOlimpiadaController setControladorPrincipal(OlimpiadasController controladorPrincipal) {
-    	this.controladorPrincipal = controladorPrincipal;
-		return this;
+        this.controladorPrincipal = controladorPrincipal;
+        return this;
     }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			cbOlimpiada.getItems().addAll(DAOOlimpiada.getOlimpiadas());
-			cbOlimpiada.getSelectionModel().selectFirst();
-		} catch (OlimpiadasException e) {
-			lanzarError(e);
-		}
-	}
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            cbOlimpiada.getItems().addAll(DAOOlimpiada.getOlimpiadas());
+            cbOlimpiada.getSelectionModel().selectFirst();
+        } catch (OlimpiadasException e) {
+            lanzarError(e);
+        }
+    }
 
 }

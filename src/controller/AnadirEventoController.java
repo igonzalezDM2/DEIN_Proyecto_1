@@ -25,11 +25,29 @@ import model.Evento;
 import model.Olimpiada;
 import utilities.StringUtils;
 
+/**
+ * Controlador para añadir un evento.
+ */
 public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializable {
 	
+	/**
+	 * Evento seleccionado.
+	 */
 	private Evento seleccionado;
+	
+	/**
+	 * Controlador principal de las Olimpiadas.
+	 */
 	private OlimpiadasController controladorPrincipal;
+	
+	/**
+	 * Olimpiada predeterminada.
+	 */
 	private Olimpiada olimpiadaPredeterminada;
+	
+	/**
+	 * Deporte predeterminado.
+	 */
 	private Deporte deportePredeterminado;
 
     @FXML
@@ -56,11 +74,21 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
     @FXML
     private Label lblTitulo;
 
+    /**
+     * Método para cancelar la acción de añadir o editar un evento.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void cancelar(ActionEvent event) {
     	cerrarVentanaDesdeEvento(event);
     }
 
+    /**
+     * Método para guardar la información de un evento.
+     * 
+     * @param event el evento de acción
+     */
     @FXML
     void guardar(ActionEvent event) {
     	try {
@@ -78,6 +106,12 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
     		
     }
     
+    /**
+     * Establece la olimpiada predeterminada.
+     * 
+     * @param olimpiadaPredeterminada la olimpiada predeterminada
+     * @return el controlador de añadir evento
+     */
     public AnadirEventoController setOlimpiadaPredeterminada(Olimpiada olimpiadaPredeterminada) {
 		if (olimpiadaPredeterminada != null) {
 			this.olimpiadaPredeterminada = olimpiadaPredeterminada;
@@ -86,6 +120,12 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
     	return this;
     }
     
+    /**
+     * Establece el deporte predeterminado.
+     * 
+     * @param deportePredeterminado el deporte predeterminado
+     * @return el controlador de añadir evento
+     */
     public AnadirEventoController setDeportePredeterminado(Deporte deportePredeterminado) {
 		if (deportePredeterminado != null) {
 			this.deportePredeterminado = deportePredeterminado;
@@ -94,6 +134,12 @@ public class AnadirEventoController implements EditorDeObjeto<Evento>, Initializ
     	return this;
     }
     
+    /**
+     * Establece el controlador principal de las Olimpiadas.
+     * 
+     * @param controladorPrincipal el controlador principal de las Olimpiadas
+     * @return el controlador de añadir evento
+     */
     public AnadirEventoController setControladorPrincipal(OlimpiadasController controladorPrincipal) {
     	this.controladorPrincipal = controladorPrincipal;
     	return this;
