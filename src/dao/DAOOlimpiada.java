@@ -12,8 +12,19 @@ import excepciones.OlimpiadasException;
 import model.Olimpiada;
 
 
+/**
+ * Clase DAOOlimpiada
+ * 
+ * Esta clase proporciona métodos para acceder a la base de datos y realizar operaciones relacionadas con la entidad Olimpiada.
+ */
 public class DAOOlimpiada extends DAOBase {
 	
+	/**
+	 * Obtiene una lista de olimpiadas.
+	 * 
+	 * @return una lista de objetos Olimpiada
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Olimpiada> getOlimpiadas() throws OlimpiadasException {
 		List<Olimpiada> olimpiadas = new LinkedList<>();
 		try (Connection con = getConexion()) {
@@ -28,6 +39,13 @@ public class DAOOlimpiada extends DAOBase {
 		return olimpiadas;
 	}
 	
+	/**
+	 * Obtiene una olimpiada por su id.
+	 * 
+	 * @param id el id de la olimpiada
+	 * @return un objeto Olimpiada
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static Olimpiada getOlimpiada(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Olimpiada WHERE id_olimpiada = ?";
@@ -45,6 +63,13 @@ public class DAOOlimpiada extends DAOBase {
 		return null;
 	}
 	
+	/**
+	 * Añade una olimpiada a la base de datos.
+	 * 
+	 * @param olimpiada la olimpiada a añadir
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void anadirOlimpiada(Olimpiada olimpiada) throws OlimpiadasException, SQLException {
 		if (olimpiada != null) {
 			
@@ -86,6 +111,13 @@ public class DAOOlimpiada extends DAOBase {
 		}
 	}
 	
+	/**
+	 * Modifica una olimpiada en la base de datos.
+	 * 
+	 * @param olimpiada la olimpiada a modificar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void modificarOlimpiada(Olimpiada olimpiada) throws OlimpiadasException, SQLException {
 		if (olimpiada != null && olimpiada.getId() > 0) {
 			
@@ -123,6 +155,13 @@ public class DAOOlimpiada extends DAOBase {
 		}
 	}
 	
+	/**
+	 * Borra una olimpiada de la base de datos.
+	 * 
+	 * @param olimpiada la olimpiada a borrar
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static void borrarOlimpiada(Olimpiada olimpiada) throws SQLException, OlimpiadasException {
 		if (olimpiada != null && olimpiada.getId() > 0) {			
 			String sql = "DELETE FROM Olimpiada WHERE id_olimpiada = ?";

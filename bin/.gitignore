@@ -1,5 +1,6 @@
 /controller/
+/dao/
+/enums/
+/excepciones/
 /model/
 /utilities/
-/fxml/
-/sql/

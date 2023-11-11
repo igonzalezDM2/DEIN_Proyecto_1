@@ -608,9 +608,9 @@ public class OlimpiadasController implements Initializable {
     		AnadirParticipacionController controlador = loader.getController();
     		
     		controlador
+    		.setControladorPrincipal(this)
     		.setEvento(evento)
-    		.setSeleccionado(participacion)
-    		.setControladorPrincipal(this);
+    		.setSeleccionado(participacion);
     		
     		Stage stage = new Stage();
     		if (participacion != null) {				

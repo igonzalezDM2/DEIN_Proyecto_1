@@ -13,8 +13,21 @@ import model.Evento;
 import model.Olimpiada;
 
 
+/**
+ * Clase DAOEvento
+ * 
+ * Esta clase proporciona métodos para acceder a la base de datos y realizar operaciones relacionadas con la entidad Evento.
+ */
 public class DAOEvento extends DAOBase{
 	
+	/**
+	 * Obtiene una lista de eventos por deporte y olimpiada.
+	 * 
+	 * @param deporte el deporte de los eventos
+	 * @param olimpiada la olimpiada de los eventos
+	 * @return una lista de objetos Evento
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Evento> getEventosByDeporteYOlimpiada(Deporte deporte, Olimpiada olimpiada) throws OlimpiadasException {
 		List<Evento> eventos = new LinkedList<>();
 		if (deporte != null && deporte.getId() > 0 && olimpiada != null && olimpiada.getId() > 0) {
@@ -34,6 +47,13 @@ public class DAOEvento extends DAOBase{
 		return eventos;
 	}
 	
+	/**
+	 * Obtiene una lista de eventos por deporte.
+	 * 
+	 * @param deporte el deporte de los eventos
+	 * @return una lista de objetos Evento
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Evento> getEventosByDeporte(Deporte deporte) throws OlimpiadasException {
 		List<Evento> eventos = new LinkedList<>();
 		if (deporte != null && deporte.getId() > 0) {
@@ -52,6 +72,13 @@ public class DAOEvento extends DAOBase{
 		return eventos;
 	}
 	
+	/**
+	 * Obtiene un evento por su id.
+	 * 
+	 * @param id el id del evento
+	 * @return el objeto Evento correspondiente al id, o null si no se encuentra
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static Evento getEvento(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Evento WHERE id_evento = ?";
@@ -69,6 +96,13 @@ public class DAOEvento extends DAOBase{
 		return null;
 	}
 	
+	/**
+	 * Añade un evento a la base de datos.
+	 * 
+	 * @param evento el evento a añadir
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void anadirEvento(Evento evento) throws OlimpiadasException, SQLException {
 		if (evento != null) {
 			
@@ -108,6 +142,13 @@ public class DAOEvento extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Modifica un evento en la base de datos.
+	 * 
+	 * @param evento el evento a modificar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void modificarEvento (Evento evento) throws OlimpiadasException, SQLException {
 		if (evento != null && evento.getId() > 0) {
 			
@@ -142,6 +183,13 @@ public class DAOEvento extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Borra un evento de la base de datos.
+	 * 
+	 * @param evento el evento a borrar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void borrarEvento(Evento evento) throws SQLException, OlimpiadasException {
 		if (evento != null && evento.getId() > 0) {			
 			String sql = "DELETE FROM Evento WHERE id_evento = ?";

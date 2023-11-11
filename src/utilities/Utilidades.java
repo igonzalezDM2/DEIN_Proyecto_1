@@ -199,11 +199,23 @@ public class Utilidades {
 		alert.show();
 	}
 	
+	/**
+	 * Interfaz funcional para el callback de confirmación.
+	 */
 	@FunctionalInterface
 	public static interface ConfirmCallback {
+		/**
+		 * Realiza las acciones necesarias.
+		 */
 		void hacerCosas();
 	}
 	
+	/**
+	 * Muestra un diálogo de confirmación con el mensaje especificado y ejecuta el callback si se selecciona "Sí".
+	 * 
+	 * @param mensaje el mensaje a mostrar en el diálogo de confirmación
+	 * @param callback el callback a ejecutar si se selecciona "Sí"
+	 */
 	public static void confirmarSiNo(String mensaje, ConfirmCallback callback) {
 		Alert alert = new Alert(AlertType.CONFIRMATION, mensaje, ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> confirm = alert.showAndWait();
@@ -238,8 +250,12 @@ public class Utilidades {
 		return null;
 	}
 	
+	/**
+	 * Cierra la ventana a partir de un evento.
+	 * 
+	 * @param evento el evento que desencadena el cierre de la ventana
+	 */
 	public static void cerrarVentanaDesdeEvento(Event evento) {
 		((Stage)((Node)evento.getSource()).getScene().getWindow()).close();
 	}
-	
 }

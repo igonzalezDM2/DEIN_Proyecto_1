@@ -12,8 +12,20 @@ import model.Deportista;
 import model.Evento;
 
 
+/**
+ * Clase DAODeportista
+ * 
+ * Esta clase se encarga de realizar operaciones de acceso a datos relacionadas con los deportistas.
+ */
 public class DAODeportista extends DAOBase{
 	
+	/**
+	 * Obtiene una lista de deportistas por evento.
+	 * 
+	 * @param evento el evento del cual se quieren obtener los deportistas
+	 * @return una lista de deportistas que participan en el evento
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Deportista> getDeportistasPorEvento(Evento evento) throws OlimpiadasException {
 		List<Deportista> lista = new LinkedList<>();
 		if (evento != null && evento.getId() > 0) {			
@@ -32,6 +44,12 @@ public class DAODeportista extends DAOBase{
 		return lista;
 	}
 
+	/**
+	 * Obtiene una lista de todos los deportistas.
+	 * 
+	 * @return una lista de todos los deportistas
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Deportista> getDeportistas() throws OlimpiadasException {
 		List<Deportista> lista = new LinkedList<>();
 			String sql = "SELECT * FROM Deportista";
@@ -47,6 +65,13 @@ public class DAODeportista extends DAOBase{
 		return lista;
 	}
 	
+	/**
+	 * Obtiene un deportista por su ID.
+	 * 
+	 * @param id el ID del deportista a obtener
+	 * @return el deportista con el ID especificado, o null si no se encuentra
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static Deportista getDeportista(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Deportista WHERE id_deportista = ?";
@@ -64,6 +89,13 @@ public class DAODeportista extends DAOBase{
 		return null;
 	}
 	
+	/**
+	 * Añade un deportista a la base de datos.
+	 * 
+	 * @param deportista el deportista a añadir
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void anadirDeportista(Deportista deportista) throws OlimpiadasException, SQLException {
 		if (deportista != null) {
 			
@@ -107,6 +139,13 @@ public class DAODeportista extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Modifica los datos de un deportista en la base de datos.
+	 * 
+	 * @param deportista el deportista a modificar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void modificarDeportista(Deportista deportista) throws OlimpiadasException, SQLException {
 		if (deportista != null && deportista.getId() > 0) {
 			
@@ -146,6 +185,13 @@ public class DAODeportista extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Borra un deportista de la base de datos.
+	 * 
+	 * @param deportista el deportista a borrar
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static void borrarDeportista(Deportista deportista) throws SQLException, OlimpiadasException {
 		if (deportista != null && deportista.getId() > 0) {			
 			String sql = "DELETE FROM Deportista WHERE id_deportista = ?";

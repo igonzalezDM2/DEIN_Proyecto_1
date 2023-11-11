@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 import utilities.StringUtils;
 
+/**
+ * Enumeración Medalla
+ * 
+ * Esta enumeración representa las medallas posibles en los juegos olímpicos.
+ */
 public enum Medalla {
 	ORO("Gold"),
 	PLATA("Silver"),

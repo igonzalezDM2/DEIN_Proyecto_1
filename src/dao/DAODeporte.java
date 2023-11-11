@@ -13,8 +13,19 @@ import model.Deporte;
 import model.Olimpiada;
 
 
+/**
+ * Clase DAODeporte
+ * 
+ * Esta clase proporciona métodos para acceder a la base de datos y realizar operaciones relacionadas con la entidad Deporte.
+ */
 public class DAODeporte extends DAOBase{
 	
+	/**
+	 * Obtiene una lista de todos los deportes.
+	 * 
+	 * @return una lista de objetos Deporte
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Deporte> getDeportes() throws OlimpiadasException {
 		List<Deporte> deportes = new LinkedList<>();
 		String sql = "SELECT * FROM Deporte";
@@ -30,6 +41,13 @@ public class DAODeporte extends DAOBase{
 		return deportes;
 	}
 	
+	/**
+	 * Obtiene una lista de deportes por olimpiada.
+	 * 
+	 * @param olimpiada la olimpiada para la cual se obtienen los deportes
+	 * @return una lista de objetos Deporte
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Deporte> getDeportesByOlimpiada(Olimpiada olimpiada) throws OlimpiadasException {
 		List<Deporte> deportes = new LinkedList<>();
 		if (olimpiada != null && olimpiada.getId() > 0) {
@@ -48,6 +66,13 @@ public class DAODeporte extends DAOBase{
 		return deportes;
 	}
 	
+	/**
+	 * Obtiene un deporte por su ID.
+	 * 
+	 * @param id el ID del deporte a obtener
+	 * @return el objeto Deporte correspondiente al ID, o null si no se encuentra
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static Deporte getDeporte(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Deporte WHERE id_deporte = ?";
@@ -65,6 +90,13 @@ public class DAODeporte extends DAOBase{
 		return null;
 	}
 	
+	/**
+	 * Añade un deporte a la base de datos.
+	 * 
+	 * @param deporte el deporte a añadir
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void anadirDeporte(Deporte deporte) throws OlimpiadasException, SQLException {
 		if (deporte != null) {
 			
@@ -100,6 +132,13 @@ public class DAODeporte extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Modifica un deporte en la base de datos.
+	 * 
+	 * @param deporte el deporte a modificar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void modificarDeporte (Deporte deporte) throws OlimpiadasException, SQLException {
 		if (deporte != null && deporte.getId() > 0) {
 			
@@ -131,6 +170,13 @@ public class DAODeporte extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Borra un deporte de la base de datos.
+	 * 
+	 * @param deporte el deporte a borrar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void borrarDeporte(Deporte deporte) throws SQLException, OlimpiadasException {
 		if (deporte != null && deporte.getId() > 0) {			
 			String sql = "DELETE FROM Deporte WHERE id_deporte = ?";

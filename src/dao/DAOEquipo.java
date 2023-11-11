@@ -12,8 +12,19 @@ import excepciones.OlimpiadasException;
 import model.Equipo;
 
 
+/**
+ * Clase DAOEquipo
+ * 
+ * Esta clase proporciona métodos para acceder a la base de datos y realizar operaciones relacionadas con la entidad Equipo.
+ */
 public class DAOEquipo extends DAOBase{
 	
+	/**
+	 * Obtiene una lista de todos los equipos.
+	 * 
+	 * @return una lista de objetos Equipo
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static List<Equipo> getEquipos() throws OlimpiadasException {
 		List<Equipo> equipos = new LinkedList<>();
 		String sql = "SELECT * FROM Equipo";
@@ -29,6 +40,13 @@ public class DAOEquipo extends DAOBase{
 		return equipos;
 	}
 	
+	/**
+	 * Obtiene un equipo por su id.
+	 * 
+	 * @param id el id del equipo a obtener
+	 * @return el objeto Equipo correspondiente al id, o null si no se encuentra
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 */
 	public static Equipo getEquipo(int id) throws OlimpiadasException {
 		if (id > 0) {
 			String sql = "SELECT * FROM Equipo WHERE id_equipo = ?";
@@ -46,6 +64,13 @@ public class DAOEquipo extends DAOBase{
 		return null;
 	}
 	
+	/**
+	 * Añade un equipo a la base de datos.
+	 * 
+	 * @param equipo el equipo a añadir
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void anadirEquipo(Equipo equipo) throws OlimpiadasException, SQLException {
 		if (equipo != null) {
 			
@@ -83,6 +108,13 @@ public class DAOEquipo extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Modifica un equipo en la base de datos.
+	 * 
+	 * @param equipo el equipo a modificar
+	 * @throws OlimpiadasException si ocurre un error al acceder a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void modificarEquipo(Equipo equipo) throws OlimpiadasException, SQLException {
 		if (equipo != null && equipo.getId() > 0) {
 			
@@ -116,6 +148,13 @@ public class DAOEquipo extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Borra un equipo de la base de datos.
+	 * 
+	 * @param equipo el equipo a borrar
+	 * @throws SQLException si ocurre un error al acceder a la base de datos
+	 * @throws OlimpiadasException si ocurre un error al ejecutar la consulta SQL
+	 */
 	public static void borrarEquipo(Equipo equipo) throws SQLException, OlimpiadasException {
 		if (equipo != null && equipo.getId() > 0) {			
 			String sql = "DELETE FROM Equipo WHERE id_equipo = ?";

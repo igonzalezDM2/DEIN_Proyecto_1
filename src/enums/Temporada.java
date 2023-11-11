@@ -2,6 +2,9 @@ package enums;
 
 import java.util.Arrays;
 
+/**
+ * Enumeración para las temporadas.
+ */
 public enum Temporada {
 	VERANO("Summer"),
 	

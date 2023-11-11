@@ -10,6 +10,7 @@ import static utilities.Utilidades.parseInt;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -139,6 +140,7 @@ public class AnadirParticipacionController implements EditorDeObjeto<Participaci
 	@Override
 	public AnadirParticipacionController setSeleccionado(Participacion seleccionado) {
 		this.seleccionado = seleccionado;
+		cargarDeportistas();
 		rellenarEditor();
 		return this;
 	}
@@ -152,12 +154,33 @@ public class AnadirParticipacionController implements EditorDeObjeto<Participaci
 		this.controladorPrincipal = controladorPrincipal;
 		return this;
 	}
+	
+	private void cargarDeportistas() {
+		try {
+			if (seleccionado == null) {
+				List<Deportista> deportistasEnElEvento = DAODeportista.getDeportistasPorEvento(evento);
+				cbDeportista.getItems().addAll(
+						DAODeportista.getDeportistas()
+						.stream()
+						.filter(dep -> !deportistasEnElEvento.contains(dep))
+						.toList()
+						);
+				
+			} else {
+				cbDeportista.getItems().add(seleccionado.getDeportista());
+			}
+			
+			cbDeportista.getSelectionModel().selectFirst();
+			
+		} catch (OlimpiadasException e) {
+			lanzarError(e);
+		}
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			cbDeportista.getItems().addAll(DAODeportista.getDeportistas());
-			cbDeportista.getSelectionModel().selectFirst();
 			cbEquipo.getItems().addAll(DAOEquipo.getEquipos());
 			cbEquipo.getSelectionModel().selectFirst();
 			cbMedalla.getItems().addAll(Medalla.values());

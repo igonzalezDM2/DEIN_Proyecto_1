@@ -8,6 +8,9 @@ import dao.DAODeporte;
 import dao.DAOOlimpiada;
 import excepciones.OlimpiadasException;
 
+/**
+ * Clase que representa un evento.
+ */
 public class Evento {
 	
 	private int id;
@@ -15,7 +18,17 @@ public class Evento {
 	private Olimpiada olimpiada;
 	private Deporte deporte;
 	
+	/**
+	 * Constructor vacío de la clase Evento.
+	 */
 	public Evento() {}
+	
+	/**
+	 * Constructor de la clase Evento que recibe un ResultSet.
+	 * 
+	 * @param rs el ResultSet con los datos del evento
+	 * @throws OlimpiadasException si ocurre un error al obtener los datos del ResultSet
+	 */
 	public Evento(ResultSet rs) throws OlimpiadasException {
 		try {
 			id = rs.getInt("id_evento");
@@ -27,38 +40,91 @@ public class Evento {
 		}
 	}
 	
+	/**
+	 * Obtiene el ID del evento.
+	 * 
+	 * @return el ID del evento
+	 */
 	public int getId() {
 		return id;
 	}
+	
+	/**
+	 * Establece el ID del evento.
+	 * 
+	 * @param id el ID del evento
+	 * @return la instancia actual de Evento
+	 */
 	public Evento setId(int id) {
 		this.id = id;
 		return this;
 	}
+	
+	/**
+	 * Obtiene el nombre del evento.
+	 * 
+	 * @return el nombre del evento
+	 */
 	public String getNombre() {
 		return nombre;
 	}
+	
+	/**
+	 * Establece el nombre del evento.
+	 * 
+	 * @param nombre el nombre del evento
+	 * @return la instancia actual de Evento
+	 */
 	public Evento setNombre(String nombre) {
 		this.nombre = nombre;
 		return this;
 	}
+	
+	/**
+	 * Obtiene la olimpiada del evento.
+	 * 
+	 * @return la olimpiada del evento
+	 */
 	public Olimpiada getOlimpiada() {
 		return olimpiada;
 	}
+	
+	/**
+	 * Establece la olimpiada del evento.
+	 * 
+	 * @param olimpiada la olimpiada del evento
+	 * @return la instancia actual de Evento
+	 */
 	public Evento setOlimpiada(Olimpiada olimpiada) {
 		this.olimpiada = olimpiada;
 		return this;
 	}
+	
+	/**
+	 * Obtiene el deporte del evento.
+	 * 
+	 * @return el deporte del evento
+	 */
 	public Deporte getDeporte() {
 		return deporte;
 	}
+	
+	/**
+	 * Establece el deporte del evento.
+	 * 
+	 * @param deporte el deporte del evento
+	 * @return la instancia actual de Evento
+	 */
 	public Evento setDeporte(Deporte deporte) {
 		this.deporte = deporte;
 		return this;
 	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -70,11 +136,10 @@ public class Evento {
 		Evento other = (Evento) obj;
 		return id == other.id;
 	}
+	
 	@Override
 	public String toString() {
 		return nombre;
 	}
-	
-	
 	
 }

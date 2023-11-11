@@ -13,8 +13,18 @@ import model.Evento;
 import model.Participacion;
 
 
+/**
+ * Clase que representa el DAO de Participacion.
+ */
 public class DAOParticipacion extends DAOBase{
 	
+	/**
+	 * Obtiene una lista de participaciones por evento.
+	 * 
+	 * @param evento El evento del que se desean obtener las participaciones.
+	 * @return Una lista de participaciones del evento.
+	 * @throws OlimpiadasException Si ocurre un error durante la obtención de las participaciones.
+	 */
 	public static List<Participacion> getParicipacionesByEvento(Evento evento) throws OlimpiadasException {
 		List<Participacion> participaciones = new LinkedList<>();
 		if (evento != null && evento.getId() > 0) {
@@ -33,6 +43,14 @@ public class DAOParticipacion extends DAOBase{
 		return participaciones;
 	}
 	
+	/**
+	 * Obtiene una participacion por deportista y evento.
+	 * 
+	 * @param deportista El deportista de la participacion.
+	 * @param evento El evento de la participacion.
+	 * @return La participacion del deportista en el evento.
+	 * @throws OlimpiadasException Si ocurre un error durante la obtención de la participacion.
+	 */
 	public static Participacion getParticipacion(Deportista deportista, Evento evento) throws OlimpiadasException {
 		if (deportista != null && deportista.getId() > 0 && evento != null && evento.getId() > 0) {
 			String sql = "SELECT * FROM Participacion WHERE id_deportista = ? AND id_evento = ?";
@@ -51,6 +69,13 @@ public class DAOParticipacion extends DAOBase{
 		return null;
 	}
 	
+	/**
+	 * Añade una participacion.
+	 * 
+	 * @param participacion La participacion a añadir.
+	 * @throws OlimpiadasException Si ocurre un error durante la adición de la participacion.
+	 * @throws SQLException Si ocurre un error de SQL durante la adición de la participacion.
+	 */
 	public static void anadirParticipacion(Participacion participacion) throws OlimpiadasException, SQLException {
 		if (participacion != null &&
 				participacion.getDeportista() != null &&
@@ -96,6 +121,13 @@ public class DAOParticipacion extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Modifica una participacion.
+	 * 
+	 * @param participacion La participacion a modificar.
+	 * @throws OlimpiadasException Si ocurre un error durante la modificación de la participacion.
+	 * @throws SQLException Si ocurre un error de SQL durante la modificación de la participacion.
+	 */
 	public static void modificarParticipacion (Participacion participacion) throws OlimpiadasException, SQLException {
 		if (participacion != null &&
 				participacion.getDeportista() != null &&
@@ -140,6 +172,13 @@ public class DAOParticipacion extends DAOBase{
 		}
 	}
 	
+	/**
+	 * Borra una participacion.
+	 * 
+	 * @param participacion La participacion a borrar.
+	 * @throws OlimpiadasException Si ocurre un error durante la eliminación de la participacion.
+	 * @throws SQLException Si ocurre un error de SQL durante la eliminación de la participacion.
+	 */
 	public static void borrarParticipacion(Participacion participacion) throws SQLException, OlimpiadasException {
 		if (participacion != null &&
 				participacion.getDeportista() != null &&

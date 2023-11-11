@@ -1,23 +1,52 @@
 package utilities;
 
+/**
+ * Clase de utilidades para manipular cadenas de texto.
+ */
 public class StringUtils {
 	
-	private StringUtils() throws IllegalAccessException {
-		throw new IllegalAccessException("Clase de utilidad");
-	}
+    private StringUtils() throws IllegalAccessException {
+        throw new IllegalAccessException("Clase de utilidad");
+    }
 	
+    /**
+     * Elimina los espacios en blanco al principio y al final de una cadena de texto.
+     * Si la cadena es nula, se devuelve una cadena vacía.
+     *
+     * @param str la cadena de texto a recortar
+     * @return la cadena de texto recortada o una cadena vacía si la cadena es nula
+     */
     public static String trimToEmpty(final String str) {
         return str == null ? "" : str.trim();
     }
     
+    /**
+     * Elimina los espacios en blanco al principio y al final de una cadena de texto.
+     * Si la cadena es nula, se devuelve nula.
+     *
+     * @param str la cadena de texto a recortar
+     * @return la cadena de texto recortada o nula si la cadena es nula
+     */
     public static String trim(final String str) {
         return str == null ? null : str.trim();
     }
     
+    /**
+     * Comprueba si una secuencia de caracteres es nula o está vacía.
+     *
+     * @param cs la secuencia de caracteres a comprobar
+     * @return true si la secuencia de caracteres es nula o está vacía, false en caso contrario
+     */
     public static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
     
+    /**
+     * Comprueba si una secuencia de caracteres es nula, está vacía o contiene solo espacios en blanco.
+     *
+     * @param cs la secuencia de caracteres a comprobar
+     * @return true si la secuencia de caracteres es nula, está vacía o contiene solo espacios en blanco, false en caso contrario
+     */
     public static boolean isBlank(final CharSequence cs) {
         final int strLen = length(cs);
         if (strLen == 0) {
@@ -31,15 +60,36 @@ public class StringUtils {
         return true;
     }
     
+    /**
+     * Obtiene la longitud de una secuencia de caracteres.
+     *
+     * @param cs la secuencia de caracteres
+     * @return la longitud de la secuencia de caracteres o 0 si la secuencia es nula
+     */
     public static int length(final CharSequence cs) {
         return cs == null ? 0 : cs.length();
     }
 
+    /**
+     * Elimina los espacios en blanco al principio y al final de una cadena de texto.
+     * Si la cadena resultante es vacía, se devuelve nula.
+     *
+     * @param str la cadena de texto a recortar
+     * @return la cadena de texto recortada o nula si la cadena resultante es vacía
+     */
     public static String trimToNull(final String str) {
         final String ts = trim(str);
         return isEmpty(ts) ? null : ts;
     }
     
+    /**
+     * Compara dos secuencias de caracteres y devuelve true si representan la misma secuencia de caracteres,
+     * ignorando las diferencias de mayúsculas y minúsculas.
+     *
+     * @param cs1 la primera secuencia de caracteres, puede ser nula
+     * @param cs2 la segunda secuencia de caracteres, puede ser nula
+     * @return true si las secuencias de caracteres son iguales (ignorando mayúsculas y minúsculas), o ambas son nulas
+     */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2) {
         if (cs1 == cs2) {
             return true;
@@ -53,7 +103,7 @@ public class StringUtils {
         if (cs1 instanceof String && cs2 instanceof String) {
             return cs1.equals(cs2);
         }
-        // Step-wise comparison
+        // Comparación paso a paso
         final int length = cs1.length();
         for (int i = 0; i < length; i++) {
             if (cs1.charAt(i) != cs2.charAt(i)) {
@@ -64,15 +114,15 @@ public class StringUtils {
     }
     
     /**
-     * Green implementation of regionMatches.
+     * Implementación propia de regionMatches.
      *
-     * @param cs the {@link CharSequence} to be processed
-     * @param ignoreCase whether or not to be case-insensitive
-     * @param thisStart the index to start on the {@code cs} CharSequence
-     * @param substring the {@link CharSequence} to be looked for
-     * @param start the index to start on the {@code substring} CharSequence
-     * @param length character length of the region
-     * @return whether the region matched
+     * @param cs la secuencia de caracteres a procesar
+     * @param ignoreCase si se debe ignorar el caso al comparar
+     * @param thisStart el índice de inicio en la secuencia de caracteres cs
+     * @param substring la secuencia de caracteres a buscar
+     * @param start el índice de inicio en la secuencia de caracteres substring
+     * @param length la longitud de la región
+     * @return true si la región coincide, false en caso contrario
      */
     static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int thisStart,
             final CharSequence substring, final int start, final int length)    {
@@ -83,16 +133,16 @@ public class StringUtils {
         int index2 = start;
         int tmpLen = length;
 
-        // Extract these first so we detect NPEs the same as the java.lang.String version
+        // Extraer estos valores primero para detectar NullPointerExceptions de la misma manera que la versión de java.lang.String
         final int srcLen = cs.length() - thisStart;
         final int otherLen = substring.length() - start;
 
-        // Check for invalid parameters
+        // Comprobar parámetros inválidos
         if (thisStart < 0 || start < 0 || length < 0) {
             return false;
         }
 
-        // Check that the regions are long enough
+        // Comprobar que las regiones tienen suficiente longitud
         if (srcLen < length || otherLen < length) {
             return false;
         }
@@ -109,7 +159,7 @@ public class StringUtils {
                 return false;
             }
 
-            // The real same check as in String.regionMatches():
+            // La misma comprobación real que en String.regionMatches():
             final char u1 = Character.toUpperCase(c1);
             final char u2 = Character.toUpperCase(c2);
             if (u1 != u2 && Character.toLowerCase(u1) != Character.toLowerCase(u2)) {
@@ -121,24 +171,16 @@ public class StringUtils {
     }
     
     /**
-     * Compares two CharSequences, returning {@code true} if they represent
-     * equal sequences of characters, ignoring case.
+     * Compara dos secuencias de caracteres, devolviendo true si representan
+     * secuencias de caracteres iguales, ignorando el caso.
      *
-     * <p>{@code null}s are handled without exceptions. Two {@code null}
-     * references are considered equal. The comparison is <strong>case insensitive</strong>.</p>
+     * <p>Se manejan los casos de null sin lanzar excepciones. Dos referencias null se consideran iguales.
+     * La comparación es <strong>insensible a mayúsculas y minúsculas</strong>.</p>
      *
-     * <pre>
-     * StringUtils.equalsIgnoreCase(null, null)   = true
-     * StringUtils.equalsIgnoreCase(null, "abc")  = false
-     * StringUtils.equalsIgnoreCase("abc", null)  = false
-     * StringUtils.equalsIgnoreCase("abc", "abc") = true
-     * StringUtils.equalsIgnoreCase("abc", "ABC") = true
-     * </pre>
-     *
-     * @param cs1  the first CharSequence, may be {@code null}
-     * @param cs2  the second CharSequence, may be {@code null}
-     * @return {@code true} if the CharSequences are equal (case-insensitive), or both {@code null}
-     * @since 3.0 Changed signature from equalsIgnoreCase(String, String) to equalsIgnoreCase(CharSequence, CharSequence)
+     * @param cs1 la primera secuencia de caracteres, puede ser nula
+     * @param cs2 la segunda secuencia de caracteres, puede ser nula
+     * @return true si las secuencias de caracteres son iguales (ignorando el caso), o ambas son nulas
+     * @since 3.0 Cambió la firma de equalsIgnoreCase(String, String) a equalsIgnoreCase(CharSequence, CharSequence)
      * @see #equals(CharSequence, CharSequence)
      */
     public static boolean equalsIgnoreCase(final CharSequence cs1, final CharSequence cs2) {
@@ -153,6 +195,5 @@ public class StringUtils {
         }
         return regionMatches(cs1, true, 0, cs2, 0, cs1.length());
     }
-    
     
 }
